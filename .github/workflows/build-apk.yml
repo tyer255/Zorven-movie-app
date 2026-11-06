@@ -1,4 +1,4 @@
-name: Build and Release Debug APK
+name: Build and Publish Debug APK
 
 on:
   push:
@@ -76,7 +76,7 @@ jobs:
           APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
           if [ ! -f "$APK_PATH" ]; then
             echo "Error: $APK_PATH not found!"
-            echo "Searching in app/build/outputs/apk..."
+            echo "Searching only inside app/build/outputs/apk..."
             if [ -d "app/build/outputs/apk" ]; then
               find app/build/outputs/apk -maxdepth 3 -name "*.apk"
             fi
@@ -100,14 +100,25 @@ jobs:
         id: prep_asset
         run: |
           TEMP_DIR=$(mktemp -d)
-          ASSET_FILE="$TEMP_DIR/app-debug.apk"
-          cp app/build/outputs/apk/debug/app-debug.apk "$ASSET_FILE"
-          if [ ! -f "$ASSET_FILE" ] || [ ! -s "$ASSET_FILE" ]; then
-            echo "Error: Prepared release asset failed."
+          REPO_RAW="${GITHUB_REPOSITORY#*/}"
+          REPO_CLEAN=$(echo "$REPO_RAW" | tr -cs 'a-zA-Z0-9._-' '-' | sed 's/^-//;s/-$//')
+          if [ -z "$REPO_CLEAN" ]; then
+            REPO_CLEAN="app"
+          fi
+          ASSET_NAME="${REPO_CLEAN}-debug-build-${GITHUB_RUN_NUMBER}.apk"
+          ASSET_PATH="$TEMP_DIR/$ASSET_NAME"
+
+          cp app/build/outputs/apk/debug/app-debug.apk "$ASSET_PATH"
+
+          if [ ! -f "$ASSET_PATH" ] || [ ! -s "$ASSET_PATH" ]; then
+            echo "Error: Failed to prepare release asset at $ASSET_PATH"
             exit 1
           fi
-          echo "Prepared release asset: $ASSET_FILE"
-          echo "asset_path=$ASSET_FILE" >> $GITHUB_OUTPUT
+
+          echo "Prepared release asset: $ASSET_PATH"
+          echo "Release asset filename: $ASSET_NAME"
+          echo "asset_path=$ASSET_PATH" >> $GITHUB_OUTPUT
+          echo "asset_name=$ASSET_NAME" >> $GITHUB_OUTPUT
 
       - name: Publish APK to GitHub Releases
         id: release_apk
@@ -121,13 +132,12 @@ jobs:
             echo "Error: Release asset $ASSET_PATH does not exist."
             exit 1
           fi
-          if [[ "$ASSET_PATH" != *.apk ]]; then
-            echo "Error: Release asset does not have .apk extension."
+          if [ ! -s "$ASSET_PATH" ]; then
+            echo "Error: Release asset $ASSET_PATH is empty."
             exit 1
           fi
-          FILENAME=$(basename "$ASSET_PATH")
-          if [ "$FILENAME" != "app-debug.apk" ]; then
-            echo "Error: Release asset filename must be app-debug.apk."
+          if [[ "$ASSET_PATH" != *.apk ]]; then
+            echo "Error: Release asset does not have .apk extension."
             exit 1
           fi
 
@@ -136,13 +146,13 @@ jobs:
 
           NOTES="This is an automatically generated debug APK. The APK was built by GitHub Actions.
 
-- Run Number: #${GITHUB_RUN_NUMBER}
-- Run Attempt: #${GITHUB_RUN_ATTEMPT}
-- Commit: ${GITHUB_SHA}
+- GitHub Actions Run Number: #${GITHUB_RUN_NUMBER}
+- GitHub Actions Run Attempt: #${GITHUB_RUN_ATTEMPT}
+- Source Commit SHA: ${GITHUB_SHA}
 
-Note: This APK is intended for testing only and is signed with a temporary debug keystore. It is not a Play Store production release."
+The APK is intended for testing and is signed only with a temporary debug keystore. It is not a Play Store production release."
 
-          echo "Creating release $TAG..."
+          echo "Publishing release $TAG..."
           gh release create "$TAG" "$ASSET_PATH" \
             --title "$TITLE" \
             --target "$GITHUB_SHA" \
@@ -156,23 +166,29 @@ Note: This APK is intended for testing only and is signed with a temporary debug
         run: |
           RELEASE_OUTCOME="${{ steps.release_apk.outcome }}"
           TAG="debug-apk-build-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
-          DIRECT_URL="https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/app-debug.apk"
+          ASSET_NAME="${{ steps.prep_asset.outputs.asset_name }}"
 
           if [ "$RELEASE_OUTCOME" = "success" ]; then
             echo "GitHub Release published successfully!"
             gh release view "$TAG" || true
+            RELEASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
             echo "Release Tag: $TAG"
             echo "Release Title: Debug APK Build #${GITHUB_RUN_NUMBER}"
-            echo "APK Filename: app-debug.apk"
-            echo "Direct Download URL: $DIRECT_URL"
+            echo "Release URL: $RELEASE_URL"
+            echo "APK Asset Filename: $ASSET_NAME"
 
-            echo "### DIRECT APK DOWNLOAD" >> $GITHUB_STEP_SUMMARY
-            echo "$DIRECT_URL" >> $GITHUB_STEP_SUMMARY
+            echo "### GitHub Release Published Successfully" >> $GITHUB_STEP_SUMMARY
+            echo "You can download the APK from the release Assets section:" >> $GITHUB_STEP_SUMMARY
+            echo "- **Release Page:** [$RELEASE_URL]($RELEASE_URL)" >> $GITHUB_STEP_SUMMARY
+            echo "- **APK Filename:** \`$ASSET_NAME\`" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Note: The normal Actions artifact \`app-debug-apk\` remains available as a backup." >> $GITHUB_STEP_SUMMARY
+            echo "The normal Actions artifact \`app-debug-apk\` is also available as a backup." >> $GITHUB_STEP_SUMMARY
           else
             echo "WARNING: GitHub Release creation failed or was skipped."
-            echo "The APK build was completed and the Actions artifact 'app-debug-apk' remains available as a backup."
-            echo "### BUILD COMPLETED WITH RELEASE WARNING" >> $GITHUB_STEP_SUMMARY
-            echo "The debug APK artifact \`app-debug-apk\` is available under Actions run artifacts." >> $GITHUB_STEP_SUMMARY
+            echo "The debug APK was built successfully."
+            echo "The Actions artifact named 'app-debug-apk' remains available as a backup."
+
+            echo "### Build Completed (Release Publishing Warning)" >> $GITHUB_STEP_SUMMARY
+            echo "The APK was built successfully, but release publishing failed." >> $GITHUB_STEP_SUMMARY
+            echo "The Actions artifact \`app-debug-apk\` remains available under the workflow run artifacts." >> $GITHUB_STEP_SUMMARY
           fi
