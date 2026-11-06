@@ -1,0 +1,6 @@
+{
+  "summary": "Implementation plan to fix duplicate Home collections, remove Continue Watching and all mock/demo data, fix the Details page double-thumbnail bug with a taller 300px overlay hero, increase Home hero height by 25% with auto-cycling subtle zoom, fix 16:9 Search landscape thumbnails, and replace all circular spinners with skeleton shimmer placeholders.",
+  "updatedAt": "2026-11-06T07:56:39.148411365Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

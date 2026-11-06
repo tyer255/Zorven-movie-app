@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Zorven</string>
+    <string name="brand_wordmark">ZORVÉN</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_clips">Clips</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_my_zorven">My Zorvén</string>
+    <string name="action_play">Play</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_my_list">My List</string>
+    <string name="action_download">Download</string>
+    <string name="action_downloaded">Downloaded</string>
+    <string name="action_share">Share</string>
+    <string name="action_rate">Rate</string>
+    <string name="action_servers">Servers</string>
+    <string name="whos_watching">Who\'s Watching?</string>
+    <string name="manage_profiles">Manage Profiles</string>
+    <string name="search_placeholder">Search movies, shows, genres, cast...</string>
+    <string name="empty_my_list_title">Your My List is Empty</string>
+    <string name="empty_my_list_subtitle">Add movies and TV shows that you want to watch later by tapping + My List on any title.</string>
+    <string name="empty_downloads_title">Never Be Without Something to Watch</string>
+    <string name="empty_downloads_subtitle">Download movies and series so you can watch offline on flights, commutes, or anywhere without Wi-Fi.</string>
+    <string name="empty_notifications_title">All Caught Up</string>
+    <string name="empty_notifications_subtitle">New release alerts, season premieres, and personalized arrivals will appear here.</string>
+</resources>

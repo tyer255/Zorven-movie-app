@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZORVÉN Details</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#25233a;--muted:#b4b2c2;--red:#e50914}
+html,body{background:#17171a;color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+#zd{width:100%;max-width:412px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.ln{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+svg{display:block}
+
+/* Clean Single 300px Hero Backdrop with Overlaid Title & Metadata */
+.hero{height:300px;position:relative;overflow:hidden;background:#191826}
+.hero img.himg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;z-index:1;display:block}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,13,22,.52) 0%,rgba(14,13,22,.12) 34%,rgba(28,26,44,.82) 70%,var(--bg) 100%);z-index:2;pointer-events:none}
+.bar{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;z-index:4}
+.brand{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:2.8px;color:#eceaf4;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.rt{display:flex;gap:12px;align-items:center}.rt>*{cursor:pointer}
+.cx{width:32px;height:32px;border-radius:50%;background:rgba(22,20,34,.82);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
+.big{position:absolute;left:50%;top:42%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:2px solid rgba(255,255,255,.92);background:rgba(14,13,22,.65);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;transition:transform .15s}
+.big:active{transform:scale(.94)}
+.hero-overlay{position:absolute;left:14px;right:14px;bottom:10px;z-index:3}
+.hero-overlay h1{font-size:clamp(22px,6vw,27px);font-weight:800;line-height:1.14;margin-bottom:4px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.orig-title{font-size:12px;color:#d0cde0;margin-bottom:6px}
+.meta{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#d6d3e4;flex-wrap:wrap}
+.meta .box{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.38);border-radius:4px;padding:1px 6px;font-size:10.5px;font-weight:600;line-height:16px}
+
+.body{padding:8px 14px 0}
+.gchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.gchip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:3.5px 10px;font-size:11px;color:#e2e0ec;font-weight:500}
+.btn{width:100%;height:44px;border:0;border-radius:6px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;cursor:pointer;font-family:inherit}
+.btn.play{background:#fff;color:#000}.btn.dl{background:rgba(140,136,160,.5);border:1px solid rgba(255,255,255,.14);color:#fff}
+.desc{font-size:14px;line-height:1.48;margin:12px 0 10px;color:#eceaf4}
+.credits{font-size:12px;color:var(--muted);line-height:1.55}
+.cast-rail{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 0 4px}
+.cast-rail::-webkit-scrollbar{display:none}
+.cast-card{flex:none;width:72px;text-align:center;font-size:11px;color:#d8d5e2}
+.cast-card .cav{width:54px;height:54px;border-radius:50%;margin:0 auto 5px;overflow:hidden;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;border:1px solid rgba(255,255,255,.2)}
+.cast-card .cav img{width:100%;height:100%;object-fit:cover;display:block}
+.cast-card span{display:block;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cast-card small{display:block;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acts{display:flex;justify-content:center;gap:48px;padding:16px 0 4px}
+.acts>div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#c9c6d6;cursor:pointer;user-select:none}
+.acts .on svg{fill:#fff}
+.tabs{display:flex;gap:22px;margin:16px 0 14px;border-top:1px solid rgba(255,255,255,.12)}
+.tabs div{padding:12px 0 6px;font-size:14px;font-weight:600;color:var(--muted);position:relative;cursor:pointer;user-select:none}
+.tabs .on{color:#fff}.tabs .on:before{content:"";position:absolute;top:-1px;left:0;right:0;height:3.5px;background:var(--red);border-radius:0 0 2px 2px}
+.sel{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:8px 12px;font-size:14px;font-weight:600;margin-bottom:14px;cursor:pointer;user-select:none}
+
+/* Episode Rows with 16:9 Thumbnails & Active Selection State */
+.ep{display:grid;grid-template-columns:128px 1fr 30px;gap:4px 12px;align-items:center;margin-bottom:14px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);cursor:pointer;transition:background .15s,border-color .15s}
+.ep.active-ep{background:rgba(229,9,20,.14);border-color:rgba(229,9,20,.55)}
+.th{width:100%;aspect-ratio:16/9;border-radius:5px;position:relative;cursor:pointer;overflow:hidden;background:#191826;border:1px solid rgba(255,255,255,.08)}
+.th img.timg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;z-index:1;display:block}
+.pl{position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:2}
+.ep.active-ep .pl{background:var(--red);border-color:#fff}
+.ep b{font-size:14px;line-height:1.25;display:block}.ep small{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:400}
+.ep .ep-now{display:inline-block;background:var(--red);color:#fff;font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle;letter-spacing:.4px}
+.ep .d{cursor:pointer;display:flex;justify-content:center;align-items:center;width:30px;height:30px}.ep p{grid-column:1/4;font-size:12.5px;color:#c9c6d6;line-height:1.42;margin-top:4px}
+@media(max-width:359px){
+  .ep{grid-template-columns:110px 1fr 28px;gap:4px 10px}
+}
+
+.tr{margin-bottom:16px;cursor:pointer}.tr .th{aspect-ratio:16/9;border-radius:6px}.tr .pl{width:44px;height:44px;margin:-22px 0 0 -22px}.tr b{display:block;font-size:14px;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid .th{aspect-ratio:2/3;border-radius:6px}
+.grid .th img.timg{object-position:center top}
+.grid .th .tgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,9,16,.92) 100%);z-index:1;pointer-events:none}
+.grid .th .tlbl{position:absolute;left:5px;right:5px;bottom:5px;z-index:2;font-size:10.5px;font-weight:600;color:#fff;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:none}
+.sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:412px;max-height:75vh;overflow:auto;background:#35324d;border-radius:18px 18px 0 0;z-index:51;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));display:none}
+.sheet .o{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.sheet .o.active-s{color:#ffd166;font-weight:700}
+.sheet .o small{color:var(--muted);font-size:12px}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:#fff;color:#111;padding:10px 16px;border-radius:20px;font-size:13px;font-weight:600;z-index:90;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}.toast.on{opacity:1}
+
+/* =========================================================================
+   PURE FULL-SCREEN LANDSCAPE PLAYER UI (#pl)
+   Fills 100vw x 100vh, zero extra clutter/badges/cards, pure clean player
+   ========================================================================= */
+#pl{position:fixed;inset:0;width:100vw;height:100vh;z-index:999;display:none;background:#000;color:#fff;overflow:hidden}
+#pl .pl-stage{position:absolute;inset:0;width:100%;height:100%;background:#000;overflow:hidden}
+#pl .pl-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000;z-index:1}
+#pl .pl-floating-back{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));left:calc(16px + env(safe-area-inset-left,0px));width:44px;height:44px;border-radius:50%;background:rgba(18,16,28,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.22);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;box-shadow:0 4px 18px rgba(0,0,0,0.65);z-index:50;opacity:0;pointer-events:none;transform:scale(0.92);transition:opacity 0.28s ease,transform 0.28s ease,background 0.15s}
+#pl .pl-floating-back.visible{opacity:1;pointer-events:auto;transform:scale(1)}
+#pl .pl-floating-back:active{transform:scale(0.88);background:rgba(229,9,20,0.95)}
+#pl .pl-loading{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;background:#000;transition:opacity .25s}
+#pl .pl-loading.hidden{opacity:0;pointer-events:none;display:none}
+#pl .pl-loading-bar{width:50%;max-width:200px;height:5px;border-radius:99px;overflow:hidden}
+#pl .pl-loading small{font-size:12px;color:#b4b2c2;letter-spacing:.3px}
+#pl .pl-error{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:#12101e}
+#pl .pl-error.visible{display:flex}
+#pl .pl-error h4{font-size:16px;font-weight:700;margin-bottom:6px;color:#fff}
+#pl .pl-error p{font-size:12.5px;color:#b4b2c2;max-width:320px;line-height:1.45;margin-bottom:14px}
+#pl .pl-error-btns{display:flex;gap:10px}
+#pl .pl-error-btns button{height:36px;padding:0 18px;border-radius:6px;border:0;font-size:13px;font-weight:700;cursor:pointer}
+#pl .pl-error-btns .retry{background:var(--red);color:#fff}
+#pl .pl-error-btns .close{background:rgba(255,255,255,.16);color:#fff}
+
+.api-state{padding:48px 20px;text-align:center}
+.api-state h3{font-size:18px;margin-bottom:8px}
+.api-state p{font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:16px;word-break:break-word}
+
+/* Skeleton Shimmer System */
+.skel{background:linear-gradient(100deg,#1d1b2b 25%,#2d2a42 50%,#1d1b2b 75%);background-size:200% 100%;animation:shimmerBg 1.4s ease-in-out infinite;border-radius:6px}
+@keyframes shimmerBg{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){
+  .skel{animation:none;background:#222032}
+}
+.skel-line{height:12px;border-radius:4px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="z" viewBox="0 0 24 40"><path d="M0 0H24V9H0Z" fill="#e50914"/><path d="M0 31H24V40H0Z" fill="#e50914"/><path d="M13 8H24L11 32H0Z" fill="#e50914"/><path d="M24 9V14.5L21 9Z" fill="#8f0710"/><path d="M0 31V25.5L3 31Z" fill="#8f0710"/></symbol></defs></svg>
+<div id="zd"></div>
+<div class="sheetbg" id="sbg"></div><div class="sheet" id="sheet"></div><div id="pl"></div><div class="toast" id="toast"></div>
+<script>
+/* =========================================================================
+   PRODUCTION UNIFIED V1 API CLIENT (https://anymovie.ai.studio/api/v1)
+   & ZXCSTREAM MIRROR PLAYER INTEGRATION (https://zxcstream-mirror.vercel.app/player/)
+   ========================================================================= */
+var PROD_DOMAIN = 'https://anymovie.ai.studio';
+var PROD_API_BASE = 'https://anymovie.ai.studio/api/v1';
+var ZXC_PLAYER_BASE = 'https://zxcstream-mirror.vercel.app/player';
+var apiCallbacks = {};
+var apiCallSeq = 0;
+var memCache = {};
+
+window.__onAnymovieApiResult = function(cbId, ok, payload) {
+  var cb = apiCallbacks[cbId];
+  if (!cb) return;
+  delete apiCallbacks[cbId];
+  if (ok) {
+    try {
+      cb.resolve(JSON.parse(payload));
+    } catch (e) {
+      cb.reject(new Error('Invalid JSON from production API: ' + e.message));
+    }
+  } else {
+    cb.reject(new Error(payload || 'Production API request failed'));
+  }
+};
+
+function apiGet(path, forceRefresh) {
+  var normPath = path.indexOf('/') === 0 ? path : '/' + path;
+  if (!forceRefresh && memCache[normPath]) {
+    return Promise.resolve(memCache[normPath]);
+  }
+  if (window.AnymovieApiBridge && typeof window.AnymovieApiBridge.fetchEndpoint === 'function') {
+    return new Promise(function(resolve, reject) {
+      var cbId = 'cb_det_' + (++apiCallSeq) + '_' + Date.now();
+      apiCallbacks[cbId] = {
+        resolve: function(res) {
+          if (res && res.success !== false) {
+            memCache[normPath] = res;
+            resolve(res);
+          } else {
+            reject(new Error((res && (res.error || res.message)) || ('API error on ' + normPath)));
+          }
+        },
+        reject: reject
+      };
+      window.AnymovieApiBridge.fetchEndpoint(normPath, cbId, !!forceRefresh);
+    });
+  }
+  return fetch(PROD_API_BASE + normPath, {
+    method: 'GET',
+    headers: { 'Accept': 'application/json' }
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Production API HTTP ' + r.status + ' at ' + PROD_API_BASE + normPath);
+    return r.json();
+  }).then(function(res) {
+    if (res && res.success === false) {
+      throw new Error(res.error || res.message || ('API failure on ' + normPath));
+    }
+    memCache[normPath] = res;
+    return res;
+  });
+}
+
+function setNativePlayerMode(active, landscape) {
+  try {
+    if (window.AnymovieApiBridge && typeof window.AnymovieApiBridge.setPlayerMode === 'function') {
+      window.AnymovieApiBridge.setPlayerMode(!!active, !!landscape);
+    }
+  } catch (e) {}
+}
+
+/* Strictly extracts canonical numeric TMDB ID from API objects or tmdb-prefixed IDs.
+   Never returns IMDb IDs (tt...), internal slugs, or display titles. */
+function extractValidTmdbId(input) {
+  if (input == null) return '';
+  if (typeof input === 'number') {
+    return (input > 0 && isFinite(input)) ? String(Math.floor(input)) : '';
+  }
+  if (typeof input === 'string') {
+    var trimmed = input.trim();
+    if (/^[1-9]\d*$/.test(trimmed)) return trimmed;
+    var prefixed = trimmed.match(/^(?:tmdb|upcoming)-([1-9]\d*)$/i);
+    return prefixed ? prefixed[1] : '';
+  }
+  if (typeof input === 'object') {
+    if (input.tmdbId != null) {
+      var fromField = extractValidTmdbId(input.tmdbId);
+      if (fromField) return fromField;
+    }
+    if (input.id != null) {
+      var fromId = extractValidTmdbId(input.id);
+      if (fromId) return fromId;
+    }
+  }
+  return '';
+}
+
+/* Builds and validates a trusted ZXCSTREAM Mirror Player URL.
+   Movies: https://zxcstream-mirror.vercel.app/player/movie/{TMDB_ID}
+   Series: https://zxcstream-mirror.vercel.app/player/tv/{TMDB_ID}/{SEASON_NUMBER}/{EPISODE_NUMBER} */
+function buildZxcPlayerUrl(opts) {
+  opts = opts || {};
+  var cleanTmdbId = extractValidTmdbId(opts.tmdbId);
+  if (!cleanTmdbId) {
+    return {
+      ok: false,
+      url: '',
+      error: 'A valid TMDB ID was not found for this title in the API response.'
+    };
+  }
+  var isSeries = !!opts.isSeries || opts.type === 'tv' || opts.type === 'series';
+  if (isSeries) {
+    var sNum = parseInt(opts.seasonNumber, 10);
+    var eNum = parseInt(opts.episodeNumber, 10);
+    if (isNaN(sNum) || sNum < 1) sNum = 1;
+    if (isNaN(eNum) || eNum < 1) eNum = 1;
+    return {
+      ok: true,
+      isSeries: true,
+      tmdbId: cleanTmdbId,
+      seasonNumber: sNum,
+      episodeNumber: eNum,
+      url: ZXC_PLAYER_BASE + '/tv/' + encodeURIComponent(cleanTmdbId) + '/' + encodeURIComponent(String(sNum)) + '/' + encodeURIComponent(String(eNum)),
+      error: null
+    };
+  }
+  return {
+    ok: true,
+    isSeries: false,
+    tmdbId: cleanTmdbId,
+    seasonNumber: null,
+    episodeNumber: null,
+    url: ZXC_PLAYER_BASE + '/movie/' + encodeURIComponent(cleanTmdbId),
+    error: null
+  };
+}
+
+function isValidHttpImg(u) {
+  if (!u || typeof u !== 'string') return false;
+  var s = u.trim();
+  if (!s || s === 'null' || s === 'undefined') return false;
+  if (s.indexOf('data:') === 0 || s.indexOf('blob:') === 0) return false;
+  return true;
+}
+
+function resolveImg(u, mode) {
+  if (!isValidHttpImg(u)) return '';
+  var s = u.trim();
+  if (s.indexOf('//') === 0) s = 'https:' + s;
+  else if (s.indexOf('/') === 0) s = PROD_DOMAIN + s;
+  else if (s.indexOf('http://') !== 0 && s.indexOf('https://') !== 0) s = PROD_DOMAIN + '/' + s;
+
+  // TMDB image size optimization
+  if (s.indexOf('image.tmdb.org/t/p/') > -1) {
+    if (mode === 'hero') {
+      return s.replace(/\/t\/p\/(?:original|w[0-9]+)\//, '/t/p/w1280/');
+    } else if (mode === 'landscape') {
+      return s.replace(/\/t\/p\/(?:original|w[0-9]+)\//, '/t/p/w500/');
+    } else {
+      return s.replace(/\/t\/p\/(?:original|w[0-9]+)\//, '/t/p/w342/');
+    }
+  }
+
+  if (s.indexOf('m.media-amazon.com/images/') > -1 && s.indexOf('._V1_') > -1) {
+    var base = s.split('._V1_')[0];
+    if (mode === 'hero') return base + '._V1_QL85_UX960_.jpg';
+    if (mode === 'landscape') return base + '._V1_QL80_UX600_.jpg';
+    return base + '._V1_QL80_UX360_.jpg';
+  }
+  return s;
+}
+
+window.onDetailImgError = function(img) {
+  if (!img) return;
+  var step = parseInt(img.getAttribute('data-fb-step') || '0', 10);
+  var fb = img.getAttribute('data-fb') || '';
+  if (step === 0 && fb && fb !== img.getAttribute('src')) {
+    img.setAttribute('data-fb-step', '1');
+    img.src = fb;
+    return;
+  }
+  img.style.display = 'none';
+};
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function getCanonicalId(item) {
+  if (!item) return '';
+  var rawId = item.imdbId || item.tmdbId || item.id;
+  if (rawId) return String(rawId).trim().toLowerCase();
+  var normTitle = String(item.title || item.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  return normTitle ? (normTitle + '_' + String(item.year || '')) : '';
+}
+
+var DATA = {};
+function resetDataState(idHint, titleHint, tmdbIdHint) {
+  DATA = {
+    id: idHint || "",
+    rawId: idHint || "",
+    tmdbId: extractValidTmdbId(tmdbIdHint) || extractValidTmdbId(idHint) || "",
+    type: "series",
+    rawType: "tv",
+    isAnime: false,
+    title: titleHint || "",
+    originalTitle: "",
+    ratingText: "",
+    year: "",
+    releaseDate: "",
+    rating: "",
+    hd: true,
+    duration: "",
+    runtime: 0,
+    platform: "",
+    category: "",
+    language: "",
+    releaseStatus: "",
+    hero: "",
+    poster: "",
+    description: "",
+    genres: [],
+    cast: [],
+    director: "",
+    inList: false,
+    liked: false,
+    downloaded: false,
+    seasons: [],
+    trailers: [],
+    similar: []
+  };
+}
+resetDataState("", "", "");
+
+var PAGE_STATE = {
+  loading: true,
+  loadingEpisodes: false,
+  error: null,
+  requestToken: 0,
+  mountedId: null
+};
+
+var S = {
+  tab: null,
+  season: 0,
+  selectedSeasonNumber: 1,
+  selectedEpisodeNumber: 1
+};
+
+function getSelectedSeasonObj() {
+  if (!DATA.seasons || !DATA.seasons.length) {
+    return { seasonNumber: 1, name: 'Season 1', episodes: [] };
+  }
+  return DATA.seasons[S.season] || DATA.seasons[0];
+}
+
+function getSelectedEpisodeObj() {
+  var sn = getSelectedSeasonObj();
+  var eps = (sn && Array.isArray(sn.episodes)) ? sn.episodes : [];
+  if (!eps.length) {
+    return {
+      episodeNumber: S.selectedEpisodeNumber || 1,
+      title: 'Episode ' + (S.selectedEpisodeNumber || 1),
+      desc: '',
+      duration: 'Episode'
+    };
+  }
+  for (var i = 0; i < eps.length; i++) {
+    var num = eps[i].episodeNumber != null ? Number(eps[i].episodeNumber) : (i + 1);
+    if (num === Number(S.selectedEpisodeNumber)) {
+      return eps[i];
+    }
+  }
+  return eps[0];
+}
+
+function getPrimaryPlayButtonLabel() {
+  if (DATA.type === 'series') {
+    var sNum = S.selectedSeasonNumber || 1;
+    var eNum = S.selectedEpisodeNumber || 1;
+    return 'Play S' + sNum + ':E' + eNum;
+  }
+  return 'Play';
+}
+
+function loadAppState() {
+  try {
+    var raw = sessionStorage.getItem('Z_APP_STATE');
+    return raw ? JSON.parse(raw) : { list: [], liked: [], dl: [], itemMap: {} };
+  } catch (e) {
+    return { list: [], liked: [], dl: [], itemMap: {} };
+  }
+}
+function saveAppState(st) {
+  try { sessionStorage.setItem('Z_APP_STATE', JSON.stringify(st)); } catch (e) {}
+}
+function syncUserFlags() {
+  var st = loadAppState();
+  var key = DATA.id || DATA.title;
+  DATA.inList = (st.list || []).indexOf(key) > -1 || (st.list || []).indexOf(DATA.title) > -1;
+  DATA.liked = (st.liked || []).indexOf(key) > -1 || (st.liked || []).indexOf(DATA.title) > -1;
+  DATA.downloaded = (st.dl || []).indexOf(key) > -1 || (st.dl || []).indexOf(DATA.title) > -1;
+}
+
+/* =========================================================================
+   SINGLE-INSTANCE ZXCSTREAM MIRROR PLAYER CONTROLLER (#pl)
+   ========================================================================= */
+var PLAYER_STATE = {
+  open: false,
+  loading: false,
+  error: null,
+  url: '',
+  isSeries: false,
+  tmdbId: '',
+  title: '',
+  episodeTitle: '',
+  seasonNumber: 1,
+  episodeNumber: 1,
+  landscape: false,
+  loadTimer: null,
+  activeSeq: 0
+};
+
+function destroyActivePlayerIframe() {
+  clearTimeout(PLAYER_STATE.loadTimer);
+  PLAYER_STATE.loadTimer = null;
+  var existingIframe = document.getElementById('zxc-player-iframe');
+  if (existingIframe) {
+    try {
+      existingIframe.onload = null;
+      existingIframe.onerror = null;
+      existingIframe.src = 'about:blank';
+    } catch (e) {}
+    if (existingIframe.parentNode) {
+      existingIframe.parentNode.removeChild(existingIframe);
+    }
+  }
+}
+
+var _detailOverlayBackTimer = null;
+function showDetailOverlayBack() {
+  var btn = document.getElementById('pclose');
+  if (!btn) return;
+  btn.classList.add('visible');
+  if (_detailOverlayBackTimer) clearTimeout(_detailOverlayBackTimer);
+  _detailOverlayBackTimer = setTimeout(function() {
+    hideDetailOverlayBack();
+  }, 3200);
+}
+function hideDetailOverlayBack() {
+  var btn = document.getElementById('pclose');
+  if (btn) btn.classList.remove('visible');
+  if (_detailOverlayBackTimer) {
+    clearTimeout(_detailOverlayBackTimer);
+    _detailOverlayBackTimer = null;
+  }
+}
+window.__onPlayerTouchDetected = function() {
+  var pl = document.getElementById('pl');
+  if (pl && pl.style.display === 'block') {
+    showDetailOverlayBack();
+  }
+};
+window.addEventListener('message', function(ev) {
+  var pl = document.getElementById('pl');
+  if (pl && pl.style.display === 'block') {
+    showDetailOverlayBack();
+  }
+});
+document.addEventListener('pointerdown', function() {
+  var pl = document.getElementById('pl');
+  if (pl && pl.style.display === 'block') {
+    showDetailOverlayBack();
+  }
+}, true);
+
+function pclose() {
+  hideDetailOverlayBack();
+  PLAYER_STATE.open = false;
+  PLAYER_STATE.loading = false;
+  PLAYER_STATE.error = null;
+  PLAYER_STATE.url = '';
+  PLAYER_STATE.landscape = false;
+  destroyActivePlayerIframe();
+  setNativePlayerMode(false, false);
+  var plEl = document.getElementById('pl');
+  if (plEl) {
+    plEl.classList.remove('is-landscape');
+    plEl.style.display = 'none';
+    plEl.innerHTML = '';
+  }
+}
+window.pclose = pclose;
+
+function buildPlayerEpisodesHtml() {
+  if (!PLAYER_STATE.isSeries || !DATA.seasons || !DATA.seasons.length) return '';
+  var snObj = getSelectedSeasonObj();
+  var sNum = snObj.seasonNumber != null ? snObj.seasonNumber : (S.season + 1);
+  var h = '<div class="pl-seasons-bar">';
+  DATA.seasons.forEach(function(s, idx) {
+    var isOn = idx === S.season;
+    h += '<div class="pl-s-chip' + (isOn ? ' on' : '') + '" data-a="pl-season" data-season="' + idx + '">' + esc(s.name || ('Season ' + (s.seasonNumber || (idx + 1)))) + '</div>';
+  });
+  h += '</div>';
+
+  if (PAGE_STATE.loadingEpisodes) {
+    h += renderEpisodesSkeleton(3);
+  } else if (!snObj.episodes || !snObj.episodes.length) {
+    h += '<p class="credits" style="padding:8px 0">No episodes listed for this season.</p>';
+  } else {
+    h += '<div class="pl-ep-grid">';
+    snObj.episodes.forEach(function(e, idx) {
+      var epNum = e.episodeNumber != null ? Number(e.episodeNumber) : (idx + 1);
+      var isCurrent = (Number(sNum) === Number(PLAYER_STATE.seasonNumber)) && (epNum === Number(PLAYER_STATE.episodeNumber));
+      h += '<div class="pl-ep-item' + (isCurrent ? ' on' : '') + '" data-a="pl-ep" data-ep="' + idx + '">' +
+        '<div class="th" ' + bg(idx) + '>' +
+          (e.image ? '<img class="timg" src="' + esc(e.image) + '" alt="' + esc(e.title) + '" decoding="async" onerror="this.style.display=\'none\'">' : '') +
+          '<div class="pl">' + PL2 + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<b>' + epNum + '. ' + esc(e.title) + (isCurrent ? ' <span class="ep-now">PLAYING</span>' : '') + '</b>' +
+          '<small>' + esc(e.duration || ('S' + sNum + ':E' + epNum)) + '</small>' +
+        '</div>' +
+      '</div>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+
+function updatePlayerSeriesPanelOnly() {
+  if (!PLAYER_STATE.open) return;
+  var subEl = document.getElementById('pl-head-sub');
+  if (subEl) {
+    subEl.textContent = PLAYER_STATE.isSeries
+      ? ('Season ' + PLAYER_STATE.seasonNumber + ' • Episode ' + PLAYER_STATE.episodeNumber + (PLAYER_STATE.episodeTitle ? (' — ' + PLAYER_STATE.episodeTitle) : ''))
+      : ('Movie • TMDB #' + PLAYER_STATE.tmdbId);
+  }
+  var badgeModeEl = document.getElementById('pl-badge-mode');
+  if (badgeModeEl) {
+    badgeModeEl.textContent = PLAYER_STATE.isSeries
+      ? ('S' + PLAYER_STATE.seasonNumber + ' : E' + PLAYER_STATE.episodeNumber)
+      : 'MOVIE';
+  }
+  var epTitleEl = document.getElementById('pl-active-heading');
+  if (epTitleEl) {
+    epTitleEl.textContent = PLAYER_STATE.isSeries
+      ? ('S' + PLAYER_STATE.seasonNumber + ':E' + PLAYER_STATE.episodeNumber + ' — ' + (PLAYER_STATE.episodeTitle || ('Episode ' + PLAYER_STATE.episodeNumber)))
+      : DATA.title;
+  }
+  var epContainer = document.getElementById('pl-series-switcher');
+  if (epContainer) {
+    epContainer.innerHTML = buildPlayerEpisodesHtml();
+  }
+}
+
+function mountOrUpdatePlayerIframe(targetUrl, seq) {
+  var stageEl = document.getElementById('pl-stage');
+  var loadingEl = document.getElementById('pl-loading');
+  var errorEl = document.getElementById('pl-error');
+  var errorMsgEl = document.getElementById('pl-error-msg');
+  if (!stageEl) return;
+
+  destroyActivePlayerIframe();
+
+  if (!targetUrl || PLAYER_STATE.error) {
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (errorEl) errorEl.classList.add('visible');
+    if (errorMsgEl) errorMsgEl.textContent = PLAYER_STATE.error || 'Unable to construct player stream URL.';
+    return;
+  }
+
+  if (errorEl) errorEl.classList.remove('visible');
+  if (loadingEl) loadingEl.classList.remove('hidden');
+
+  var iframe = document.createElement('iframe');
+  iframe.id = 'zxc-player-iframe';
+  iframe.setAttribute('width', '100%');
+  iframe.setAttribute('height', '100%');
+  iframe.setAttribute('frameborder', '0');
+  iframe.setAttribute('scrolling', 'no');
+  iframe.setAttribute('allowfullscreen', 'true');
+  iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+  iframe.setAttribute('referrerpolicy', 'origin');
+
+  var settled = false;
+  iframe.onload = function() {
+    if (seq !== PLAYER_STATE.activeSeq || settled) return;
+    settled = true;
+    clearTimeout(PLAYER_STATE.loadTimer);
+    PLAYER_STATE.loading = false;
+    var lEl = document.getElementById('pl-loading');
+    if (lEl) lEl.classList.add('hidden');
+  };
+
+  iframe.onerror = function() {
+    if (seq !== PLAYER_STATE.activeSeq || settled) return;
+    settled = true;
+    clearTimeout(PLAYER_STATE.loadTimer);
+    PLAYER_STATE.loading = false;
+    PLAYER_STATE.error = 'The embedded ZXCSTREAM player could not load this stream right now.';
+    var lEl = document.getElementById('pl-loading');
+    if (lEl) lEl.classList.add('hidden');
+    var eEl = document.getElementById('pl-error');
+    if (eEl) eEl.classList.add('visible');
+    var mEl = document.getElementById('pl-error-msg');
+    if (mEl) mEl.textContent = PLAYER_STATE.error;
+  };
+
+  PLAYER_STATE.loadTimer = setTimeout(function() {
+    if (seq !== PLAYER_STATE.activeSeq || settled) return;
+    settled = true;
+    PLAYER_STATE.loading = false;
+    var lEl = document.getElementById('pl-loading');
+    if (lEl) lEl.classList.add('hidden');
+  }, 8500);
+
+  stageEl.insertBefore(iframe, stageEl.firstChild);
+  iframe.src = targetUrl;
+}
+
+function openZxcPlayer(playRequest) {
+  playRequest = playRequest || {};
+  var seq = ++PLAYER_STATE.activeSeq;
+  var isSeries = playRequest.isSeries != null ? !!playRequest.isSeries : (DATA.type === 'series');
+  var seasonNum = isSeries ? (playRequest.seasonNumber || S.selectedSeasonNumber || 1) : null;
+  var episodeNum = isSeries ? (playRequest.episodeNumber || S.selectedEpisodeNumber || 1) : null;
+  var epObj = isSeries ? getSelectedEpisodeObj() : null;
+  var episodeTitle = playRequest.episodeTitle || (epObj && epObj.title) || '';
+  var tmdbId = extractValidTmdbId(playRequest.tmdbId) || extractValidTmdbId(DATA.tmdbId) || extractValidTmdbId(DATA.id);
+
+  PLAYER_STATE.open = true;
+  PLAYER_STATE.loading = true;
+  PLAYER_STATE.error = null;
+  PLAYER_STATE.isSeries = isSeries;
+  PLAYER_STATE.tmdbId = tmdbId;
+  PLAYER_STATE.title = playRequest.title || DATA.title || 'Untitled';
+  PLAYER_STATE.episodeTitle = episodeTitle;
+  PLAYER_STATE.seasonNumber = seasonNum || 1;
+  PLAYER_STATE.episodeNumber = episodeNum || 1;
+  PLAYER_STATE.landscape = true;
+
+  // Immediately rotate screen automatically to landscape for video playback
+  setNativePlayerMode(true, true);
+
+  var plEl = document.getElementById('pl');
+  var alreadyMounted = plEl.style.display === 'block' && document.getElementById('pl-stage');
+
+  var built = buildZxcPlayerUrl({
+    isSeries: isSeries,
+    tmdbId: tmdbId,
+    seasonNumber: seasonNum,
+    episodeNumber: episodeNum
+  });
+  PLAYER_STATE.url = built.url;
+  if (!built.ok) {
+    PLAYER_STATE.error = built.error;
+  }
+
+  var titleDisplay = isSeries
+    ? (DATA.title + ' • S' + PLAYER_STATE.seasonNumber + ':E' + PLAYER_STATE.episodeNumber + (episodeTitle ? (' — ' + episodeTitle) : ''))
+    : (DATA.title);
+
+  if (!alreadyMounted) {
+    var shellHtml = '<div class="pl-stage" id="pl-stage">' +
+      '<div class="pl-floating-back" id="pclose" data-a="pclose" title="Back">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>' +
+      '</div>' +
+      '<div class="pl-loading" id="pl-loading">' +
+        '<div class="skel" style="width:54px;height:54px;border-radius:50%"></div>' +
+        '<div class="skel pl-loading-bar"></div>' +
+        '<small>Loading Video Player…</small>' +
+      '</div>' +
+      '<div class="pl-error" id="pl-error">' +
+        '<h4>Stream Unavailable</h4>' +
+        '<p id="pl-error-msg">' + esc(PLAYER_STATE.error || '') + '</p>' +
+        '<div class="pl-error-btns">' +
+          '<button class="retry" data-a="pretry">Retry</button>' +
+          '<button class="close" data-a="pclose">Back</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+    plEl.innerHTML = shellHtml;
+    plEl.style.display = 'block';
+  }
+  showDetailOverlayBack();
+
+  // Record in Continue Watching state
+  try {
+    var st = loadAppState();
+    var key = DATA.id || DATA.title;
+    if (!st.itemMap) st.itemMap = {};
+    st.itemMap[key] = {
+      id: key,
+      tmdbId: tmdbId ? Number(tmdbId) : undefined,
+      title: DATA.title,
+      type: DATA.rawType,
+      isSeries: DATA.type === 'series',
+      poster: DATA.poster,
+      backdrop: DATA.hero,
+      duration: DATA.duration,
+      rating: DATA.ratingText
+    };
+    saveAppState(st);
+  } catch (e) {}
+
+  // If tmdbId is missing on an older record, look it up from production API before failing
+  if (!built.ok && DATA.title) {
+    var loadingEl = document.getElementById('pl-loading');
+    var errorEl = document.getElementById('pl-error');
+    if (loadingEl) loadingEl.classList.remove('hidden');
+    if (errorEl) errorEl.classList.remove('visible');
+
+    resolveCanonicalTmdbIdFromApi(DATA.id, DATA.title, isSeries).then(function(resolvedTmdb) {
+      if (seq !== PLAYER_STATE.activeSeq || !PLAYER_STATE.open) return;
+      if (resolvedTmdb) {
+        DATA.tmdbId = resolvedTmdb;
+        PLAYER_STATE.tmdbId = resolvedTmdb;
+        var rebuilt = buildZxcPlayerUrl({
+          isSeries: isSeries,
+          tmdbId: resolvedTmdb,
+          seasonNumber: PLAYER_STATE.seasonNumber,
+          episodeNumber: PLAYER_STATE.episodeNumber
+        });
+        PLAYER_STATE.url = rebuilt.url;
+        PLAYER_STATE.error = rebuilt.error;
+        var rTitleEl = document.getElementById('pl-floating-title');
+        if (rTitleEl) {
+          rTitleEl.textContent = isSeries
+            ? (DATA.title + ' • S' + PLAYER_STATE.seasonNumber + ':E' + PLAYER_STATE.episodeNumber)
+            : DATA.title;
+        }
+        mountOrUpdatePlayerIframe(rebuilt.url, seq);
+      } else {
+        PLAYER_STATE.error = 'No canonical TMDB ID is available for "' + DATA.title + '" from the production API.';
+        mountOrUpdatePlayerIframe('', seq);
+      }
+    });
+    return;
+  }
+
+  mountOrUpdatePlayerIframe(built.url, seq);
+}
+
+function resolveCanonicalTmdbIdFromApi(contentId, title, isSeries) {
+  var direct = extractValidTmdbId(contentId);
+  if (direct) return Promise.resolve(direct);
+
+  var typeParam = isSeries ? 'tv' : 'movie';
+  return apiGet('/search?q=' + encodeURIComponent(title || '') + '&type=' + typeParam + '&page=1&limit=10', false)
+    .then(function(res) {
+      var list = (res && Array.isArray(res.data)) ? res.data : [];
+      var normTarget = String(title || '').toLowerCase().trim();
+      for (var i = 0; i < list.length; i++) {
+        var it = list[i];
+        var tId = extractValidTmdbId(it);
+        if (!tId) continue;
+        var itTitle = String(it.title || it.name || '').toLowerCase().trim();
+        if (itTitle === normTarget) return tId;
+      }
+      for (var j = 0; j < list.length; j++) {
+        var fallbackTid = extractValidTmdbId(list[j]);
+        if (fallbackTid) return fallbackTid;
+      }
+      return '';
+    })
+    .catch(function() { return ''; });
+}
+
+var HOOKS = {
+  onClose: function(){
+    pclose();
+    location.href = "Z_Home_UI.html";
+  },
+  onPlay: function(ctx){
+    ctx = ctx || {};
+    var isSeries = DATA.type === 'series';
+    if (isSeries) {
+      var sNum = ctx.seasonNumber != null ? ctx.seasonNumber : (S.selectedSeasonNumber || 1);
+      var eNum = ctx.episodeNumber != null ? ctx.episodeNumber : (S.selectedEpisodeNumber || 1);
+      S.selectedSeasonNumber = sNum;
+      S.selectedEpisodeNumber = eNum;
+      updatePrimaryPlayButtonOnly();
+      updateTabPanelOnly();
+      openZxcPlayer({
+        isSeries: true,
+        tmdbId: DATA.tmdbId,
+        title: DATA.title,
+        episodeTitle: ctx.episodeTitle || (getSelectedEpisodeObj() && getSelectedEpisodeObj().title) || '',
+        seasonNumber: sNum,
+        episodeNumber: eNum
+      });
+    } else {
+      openZxcPlayer({
+        isSeries: false,
+        tmdbId: DATA.tmdbId,
+        title: DATA.title
+      });
+    }
+  },
+  onDownload: function(ctx){
+    if (ctx.episode == null) {
+      var st = loadAppState();
+      var key = DATA.id || DATA.title;
+      if (!st.itemMap) st.itemMap = {};
+      st.itemMap[key] = { id: key, tmdbId: DATA.tmdbId ? Number(DATA.tmdbId) : undefined, title: DATA.title, type: DATA.rawType, isSeries: DATA.type === 'series', poster: DATA.poster, backdrop: DATA.hero, duration: DATA.duration, rating: DATA.ratingText };
+      var idx = st.dl.indexOf(key);
+      if (ctx.on && idx === -1) st.dl.push(key);
+      if (!ctx.on && idx > -1) st.dl.splice(idx, 1);
+      saveAppState(st);
+      toast(ctx.on ? "Downloading " + DATA.title : "Download removed");
+    }
+  },
+  onList: function(on){
+    var st = loadAppState();
+    var key = DATA.id || DATA.title;
+    if (!st.itemMap) st.itemMap = {};
+    st.itemMap[key] = { id: key, tmdbId: DATA.tmdbId ? Number(DATA.tmdbId) : undefined, title: DATA.title, type: DATA.rawType, isSeries: DATA.type === 'series', poster: DATA.poster, backdrop: DATA.hero, duration: DATA.duration, rating: DATA.ratingText };
+    var idx = st.list.indexOf(key);
+    if (on && idx === -1) st.list.push(key);
+    if (!on && idx > -1) st.list.splice(idx, 1);
+    saveAppState(st);
+    toast(on ? "Added to My List" : "Removed from My List");
+  },
+  onRate: function(on){
+    var st = loadAppState();
+    var key = DATA.id || DATA.title;
+    if (!st.itemMap) st.itemMap = {};
+    st.itemMap[key] = { id: key, tmdbId: DATA.tmdbId ? Number(DATA.tmdbId) : undefined, title: DATA.title, type: DATA.rawType, isSeries: DATA.type === 'series', poster: DATA.poster, backdrop: DATA.hero, duration: DATA.duration, rating: DATA.ratingText };
+    var idx = st.liked.indexOf(key);
+    if (on && idx === -1) st.liked.push(key);
+    if (!on && idx > -1) st.liked.splice(idx, 1);
+    saveAppState(st);
+  },
+  onShare: function(){ try{ navigator.clipboard.writeText(location.href) }catch(e){} toast("Link copied") },
+  onCast: function(){ toast("Searching for Cast devices…") },
+  onOpenTitle: function(item){
+    if (!item || !item.id) return;
+    pclose();
+    closeSheet();
+    var st = loadAppState();
+    st.lastOpenedId = item.id;
+    saveAppState(st);
+    var itemTmdb = extractValidTmdbId(item);
+    var nextUrl = 'Z_Detail_UI.html?id=' + encodeURIComponent(item.id) +
+      '&tmdbId=' + encodeURIComponent(itemTmdb) +
+      '&type=' + encodeURIComponent(item.type || (item.isSeries ? 'tv' : 'movie')) +
+      '&isSeries=' + (item.isSeries ? 'true' : 'false') +
+      '&category=' + encodeURIComponent(item.category || '') +
+      '&title=' + encodeURIComponent(item.title || '');
+    history.pushState({ id: item.id, tmdbId: itemTmdb, type: item.type, isSeries: item.isSeries, category: item.category, title: item.title }, '', nextUrl);
+    fetchFullContentDetails(item.id, item.type, item.isSeries, item.category, item.title, false, itemTmdb, item.id);
+  }
+};
+
+function mapRawEpisodes(rawEps) {
+  if (!Array.isArray(rawEps)) return [];
+  return rawEps.map(function(e, idx) {
+    var mins = e.runtime ? (e.runtime + 'm') : '';
+    var subParts = [];
+    if (mins) subParts.push(mins);
+    if (e.airDate) subParts.push(e.airDate);
+    var epNum = e.episodeNumber != null ? Number(e.episodeNumber) : (idx + 1);
+    return {
+      id: e.id || (idx + 1),
+      episodeNumber: epNum,
+      title: e.name || e.title || ('Episode ' + epNum),
+      duration: subParts.join(' • ') || 'Episode',
+      desc: e.overview || '',
+      image: resolveImg(e.thumbnail || e.still || DATA.hero, 'landscape')
+    };
+  });
+}
+
+function selectSeasonByIndex(seasonIndex, autoPlayFirstEpisode) {
+  var snObj = DATA.seasons[seasonIndex];
+  if (!snObj) return;
+  S.season = seasonIndex;
+  var sNum = snObj.seasonNumber != null ? Number(snObj.seasonNumber) : (seasonIndex + 1);
+  S.selectedSeasonNumber = sNum;
+  // Reset episode selection to the first episode of the newly selected season
+  var firstEpNum = (snObj.episodes && snObj.episodes.length && snObj.episodes[0].episodeNumber != null)
+    ? Number(snObj.episodes[0].episodeNumber)
+    : 1;
+  S.selectedEpisodeNumber = firstEpNum;
+  updatePrimaryPlayButtonOnly();
+
+  if (snObj.episodesLoaded && snObj.episodes && snObj.episodes.length) {
+    updateTabPanelOnly();
+    updatePlayerSeriesPanelOnly();
+    if (autoPlayFirstEpisode && PLAYER_STATE.open) {
+      HOOKS.onPlay({
+        seasonNumber: S.selectedSeasonNumber,
+        episodeNumber: S.selectedEpisodeNumber,
+        episodeTitle: snObj.episodes[0].title
+      });
+    }
+    return;
+  }
+
+  var activeToken = PAGE_STATE.requestToken;
+  PAGE_STATE.loadingEpisodes = true;
+  updateTabPanelOnly();
+  updatePlayerSeriesPanelOnly();
+
+  var seriesEndpointId = DATA.rawId || DATA.id;
+  apiGet('/series/' + encodeURIComponent(seriesEndpointId) + '/season/' + encodeURIComponent(sNum) + '/episodes', false)
+    .catch(function() {
+      if (DATA.tmdbId) {
+        return apiGet('/series/tmdb-' + encodeURIComponent(DATA.tmdbId) + '/season/' + encodeURIComponent(sNum) + '/episodes', false);
+      }
+      throw new Error('Could not load season episodes');
+    })
+    .then(function(res) {
+      if (activeToken !== PAGE_STATE.requestToken) return;
+      var epData = (res && res.data) || {};
+      snObj.episodes = mapRawEpisodes(epData.episodes);
+      snObj.episodesLoaded = true;
+      PAGE_STATE.loadingEpisodes = false;
+      if (snObj.episodes.length > 0) {
+        S.selectedEpisodeNumber = snObj.episodes[0].episodeNumber || 1;
+      } else {
+        S.selectedEpisodeNumber = 1;
+      }
+      updatePrimaryPlayButtonOnly();
+      updateTabPanelOnly();
+      updatePlayerSeriesPanelOnly();
+      if (autoPlayFirstEpisode && PLAYER_STATE.open) {
+        var firstEp = snObj.episodes[0];
+        HOOKS.onPlay({
+          seasonNumber: S.selectedSeasonNumber,
+          episodeNumber: S.selectedEpisodeNumber,
+          episodeTitle: firstEp ? firstEp.title : ('Episode ' + S.selectedEpisodeNumber)
+        });
+      }
+    })
+    .catch(function(err) {
+      if (activeToken !== PAGE_STATE.requestToken) return;
+      PAGE_STATE.loadingEpisodes = false;
+      toast(err.message || 'Could not load season episodes');
+      updateTabPanelOnly();
+      updatePlayerSeriesPanelOnly();
+    });
+}
+
+function populateDataFromApiObject(raw, seasonsOverride, initialSeasonEpisodes, tmdbIdFallback, rawIdFallback) {
+  var isSeriesContent = !!raw.isSeries || raw.type === 'tv' || (Array.isArray(seasonsOverride) && seasonsOverride.length > 0) || (Array.isArray(raw.seasons) && raw.seasons.length > 0);
+  DATA.id = raw.id || DATA.id;
+  DATA.rawId = rawIdFallback || raw.id || DATA.id;
+  DATA.tmdbId = extractValidTmdbId(raw) || extractValidTmdbId(tmdbIdFallback) || DATA.tmdbId || "";
+  DATA.type = isSeriesContent ? "series" : "film";
+  DATA.rawType = raw.type || (isSeriesContent ? "tv" : "movie");
+  DATA.isAnime = (raw.category && raw.category.toLowerCase() === 'anime') ||
+                 (Array.isArray(raw.genres) && raw.genres.some(function(g){ return String(g).toLowerCase().indexOf('anime') > -1; }));
+  DATA.title = raw.title || raw.name || DATA.title || "Untitled";
+  DATA.originalTitle = (raw.originalTitle && raw.originalTitle !== DATA.title) ? raw.originalTitle : "";
+  var vote = raw.voteAverage != null && !isNaN(Number(raw.voteAverage)) ? Number(raw.voteAverage) : 0;
+  DATA.ratingText = raw.rating || (vote > 0 ? (vote.toFixed(1) + '/10') : '');
+  DATA.year = raw.year || (raw.releaseDate ? String(raw.releaseDate).slice(0, 4) : '');
+  DATA.releaseDate = raw.releaseDate || '';
+  DATA.rating = raw.releaseStatus || '';
+  DATA.hd = true;
+  DATA.runtime = raw.runtime || 0;
+  DATA.duration = raw.duration || (raw.runtime ? (Math.floor(raw.runtime / 60) + 'h ' + (raw.runtime % 60) + 'm') : '');
+  DATA.platform = raw.platform ? String(raw.platform).toUpperCase() : '';
+  DATA.category = raw.category || '';
+  DATA.language = raw.language ? String(raw.language).toUpperCase() : '';
+  DATA.hero = resolveImg(raw.backdrop || raw.poster, 'hero');
+  DATA.poster = resolveImg(raw.poster || raw.backdrop, 'poster');
+  DATA.description = raw.overview || "";
+  DATA.genres = Array.isArray(raw.genres) ? raw.genres : [];
+  DATA.director = raw.director || "";
+  DATA.cast = Array.isArray(raw.cast) ? raw.cast.map(function(c) {
+    if (typeof c === 'string') return { name: c, character: '', profileImage: '' };
+    return {
+      name: c.name || '',
+      character: c.character || '',
+      profileImage: resolveImg(c.profileImage, 'poster')
+    };
+  }) : [];
+
+  var rawSeasons = Array.isArray(seasonsOverride) && seasonsOverride.length ? seasonsOverride : (Array.isArray(raw.seasons) ? raw.seasons : []);
+  if (isSeriesContent) {
+    if (rawSeasons.length) {
+      DATA.seasons = rawSeasons.map(function(s, idx) {
+        return {
+          id: s.id || (idx + 1),
+          seasonNumber: s.seasonNumber != null ? Number(s.seasonNumber) : (idx + 1),
+          name: s.name || ('Season ' + (s.seasonNumber || (idx + 1))),
+          episodeCount: s.episodeCount || 0,
+          overview: s.overview || '',
+          poster: resolveImg(s.poster, 'poster'),
+          episodes: idx === 0 && Array.isArray(initialSeasonEpisodes) ? mapRawEpisodes(initialSeasonEpisodes) : [],
+          episodesLoaded: idx === 0 && Array.isArray(initialSeasonEpisodes)
+        };
+      });
+    } else {
+      DATA.seasons = [{
+        id: 1,
+        seasonNumber: 1,
+        name: "Season 1",
+        episodeCount: Array.isArray(initialSeasonEpisodes) ? initialSeasonEpisodes.length : 0,
+        overview: "",
+        poster: DATA.poster,
+        episodes: Array.isArray(initialSeasonEpisodes) ? mapRawEpisodes(initialSeasonEpisodes) : [],
+        episodesLoaded: Array.isArray(initialSeasonEpisodes)
+      }];
+    }
+    var firstSn = DATA.seasons[0];
+    S.season = 0;
+    S.selectedSeasonNumber = (firstSn && firstSn.seasonNumber != null) ? Number(firstSn.seasonNumber) : 1;
+    S.selectedEpisodeNumber = (firstSn && firstSn.episodes && firstSn.episodes.length && firstSn.episodes[0].episodeNumber != null)
+      ? Number(firstSn.episodes[0].episodeNumber)
+      : 1;
+
+    if (firstSn && firstSn.episodes.length > 0) {
+      var ep1Img = firstSn.episodes[0].image;
+      if (ep1Img && ep1Img.indexOf('image.tmdb.org') > -1 && DATA.hero.indexOf('image.tmdb.org') === -1) {
+        DATA.hero = ep1Img;
+      }
+    }
+  } else {
+    DATA.seasons = [];
+    S.season = 0;
+    S.selectedSeasonNumber = 1;
+    S.selectedEpisodeNumber = 1;
+  }
+
+  var rawTrailers = Array.isArray(raw.trailers) ? raw.trailers : [];
+  DATA.trailers = rawTrailers.map(function(t) {
+    var vid = t.key || t.videoId || '';
+    var thumb = resolveImg(t.thumbnail || t.image, 'landscape') || (vid ? ('https://img.youtube.com/vi/' + vid + '/hqdefault.jpg') : DATA.hero);
+    return {
+      title: t.name || t.title || 'Official Trailer',
+      image: thumb
+    };
+  });
+
+  var currentCid = getCanonicalId(raw);
+  var seenRel = {};
+  if (currentCid) seenRel[currentCid] = true;
+  var rawRelated = Array.isArray(raw.related) ? raw.related : [];
+  var uniqueRelated = [];
+  rawRelated.forEach(function(r) {
+    if (!r || !r.id) return;
+    var rCid = getCanonicalId(r);
+    if (!rCid || seenRel[rCid]) return;
+    seenRel[rCid] = true;
+    var primarySimImg = resolveImg(r.poster, 'poster') || resolveImg(r.backdrop, 'poster');
+    var fallbackSimImg = resolveImg(r.backdrop, 'poster') || resolveImg(r.poster, 'poster');
+    uniqueRelated.push({
+      id: r.id,
+      tmdbId: extractValidTmdbId(r),
+      title: r.title || r.name || 'Untitled',
+      type: r.type || (r.isSeries ? 'tv' : 'movie'),
+      isSeries: !!r.isSeries || r.type === 'tv',
+      category: r.category || '',
+      rating: r.rating || (r.voteAverage ? Number(r.voteAverage).toFixed(1) : ''),
+      image: primarySimImg,
+      fallbackImage: fallbackSimImg
+    });
+  });
+  DATA.similar = uniqueRelated;
+
+  syncUserFlags();
+}
+
+/* Single atomic load: fetches details + canonical TMDB ID + TMDB landscape backdrop + seasons + first season episodes */
+function fetchFullContentDetails(contentId, contentType, isSeriesHint, categoryHint, titleHint, force, tmdbIdHint, rawIdHint) {
+  pclose();
+  var token = ++PAGE_STATE.requestToken;
+  PAGE_STATE.loading = true;
+  PAGE_STATE.loadingEpisodes = false;
+  PAGE_STATE.error = null;
+  PAGE_STATE.mountedId = null;
+  S.tab = null;
+  S.season = 0;
+  S.selectedSeasonNumber = 1;
+  S.selectedEpisodeNumber = 1;
+
+  resetDataState(contentId || '', titleHint || '', tmdbIdHint || '');
+  renderFullPage();
+  window.scrollTo(0, 0);
+
+  if (!contentId) {
+    PAGE_STATE.loading = false;
+    PAGE_STATE.error = 'No title selected. Please choose a movie or series from the catalogue.';
+    renderFullPage();
+    return;
+  }
+
+  var preferSeries = isSeriesHint === true || isSeriesHint === 'true' || contentType === 'tv' || contentType === 'series';
+  var primaryPath = preferSeries
+    ? ('/series/' + encodeURIComponent(contentId))
+    : ('/movie/' + encodeURIComponent(contentId));
+
+  apiGet(primaryPath, force)
+    .catch(function() {
+      var altPath = preferSeries
+        ? ('/movie/' + encodeURIComponent(contentId))
+        : ('/series/' + encodeURIComponent(contentId));
+      return apiGet(altPath, force);
+    })
+    .then(function(res) {
+      if (token !== PAGE_STATE.requestToken) return;
+      var detailObj = (res && res.data) || {};
+      var isActuallySeries = !!detailObj.isSeries || detailObj.type === 'tv' || preferSeries;
+      var tmdbNumeric = extractValidTmdbId(detailObj) || extractValidTmdbId(tmdbIdHint) || extractValidTmdbId(contentId);
+
+      var tmdbEnrichPromise = Promise.resolve(detailObj);
+      if (tmdbNumeric && String(detailObj.backdrop || '').indexOf('image.tmdb.org') === -1 && String(contentId).indexOf('tmdb-') !== 0) {
+        var tmdbPath = (isActuallySeries ? '/series/tmdb-' : '/movie/tmdb-') + encodeURIComponent(String(tmdbNumeric));
+        tmdbEnrichPromise = apiGet(tmdbPath, false).then(function(tRes) {
+          var tData = tRes && tRes.data;
+          if (tData) {
+            if (!detailObj.tmdbId) detailObj.tmdbId = extractValidTmdbId(tData) || Number(tmdbNumeric);
+            if (isValidHttpImg(tData.backdrop)) detailObj.backdrop = tData.backdrop;
+            if (isValidHttpImg(tData.poster)) detailObj.poster = tData.poster;
+            if (tData.overview && tData.overview.indexOf('high-speed multi-server') === -1) detailObj.overview = tData.overview;
+            if (Array.isArray(tData.cast) && tData.cast.length) detailObj.cast = tData.cast;
+            if (Array.isArray(tData.related) && tData.related.length) detailObj.related = tData.related;
+            if (tData.director) detailObj.director = tData.director;
+            if (tData.runtime) detailObj.runtime = tData.runtime;
+          }
+          return detailObj;
+        }).catch(function() { return detailObj; });
+      } else if (!tmdbNumeric && (detailObj.title || titleHint)) {
+        // Resolve canonical TMDB ID from production search endpoint if missing on raw detail object
+        tmdbEnrichPromise = resolveCanonicalTmdbIdFromApi(contentId, detailObj.title || titleHint, isActuallySeries)
+          .then(function(foundTmdb) {
+            if (foundTmdb) {
+              tmdbNumeric = foundTmdb;
+              detailObj.tmdbId = Number(foundTmdb);
+            }
+            return detailObj;
+          });
+      }
+
+      return tmdbEnrichPromise.then(function(enrichedDetail) {
+        if (token !== PAGE_STATE.requestToken) return;
+        var resolvedId = rawIdHint || enrichedDetail.id || contentId;
+
+        if (isActuallySeries) {
+          var seasonsPromise = (Array.isArray(enrichedDetail.seasons) && enrichedDetail.seasons.length)
+            ? Promise.resolve(enrichedDetail.seasons)
+            : apiGet('/series/' + encodeURIComponent(resolvedId) + '/seasons', force)
+                .then(function(sRes) {
+                  return (sRes && sRes.data && Array.isArray(sRes.data.seasons)) ? sRes.data.seasons : [];
+                })
+                .catch(function() { return []; });
+
+          return seasonsPromise.then(function(seasonsList) {
+            if (token !== PAGE_STATE.requestToken) return;
+            var firstSeasonNum = (seasonsList.length && seasonsList[0].seasonNumber != null) ? seasonsList[0].seasonNumber : 1;
+            return apiGet('/series/' + encodeURIComponent(resolvedId) + '/season/' + encodeURIComponent(firstSeasonNum) + '/episodes', force)
+              .then(function(epRes) {
+                var epArr = (epRes && epRes.data && Array.isArray(epRes.data.episodes)) ? epRes.data.episodes : [];
+                return { seasonsList: seasonsList, firstEpisodes: epArr };
+              })
+              .catch(function() {
+                return { seasonsList: seasonsList, firstEpisodes: [] };
+              });
+          }).then(function(bundle) {
+            if (!bundle || token !== PAGE_STATE.requestToken) return;
+            populateDataFromApiObject(enrichedDetail, bundle.seasonsList, bundle.firstEpisodes, tmdbNumeric, resolvedId);
+            PAGE_STATE.loading = false;
+            renderFullPage();
+            fetchFallbackTrailer(DATA.title, token);
+          });
+        } else {
+          populateDataFromApiObject(enrichedDetail, [], null, tmdbNumeric, resolvedId);
+          PAGE_STATE.loading = false;
+          renderFullPage();
+          fetchFallbackTrailer(DATA.title, token);
+        }
+      });
+    })
+    .catch(function(err) {
+      if (token !== PAGE_STATE.requestToken) return;
+      PAGE_STATE.loading = false;
+      PAGE_STATE.error = err && err.message ? err.message : ('Failed to load details for ' + contentId);
+      renderFullPage();
+    });
+}
+
+function fetchFallbackTrailer(title, token) {
+  if (!title || (DATA.trailers && DATA.trailers.length > 0)) return;
+  apiGet('/trailer?q=' + encodeURIComponent(title), false)
+    .then(function(res) {
+      if (token !== PAGE_STATE.requestToken) return;
+      var vid = res && res.data && res.data.videoId;
+      if (vid) {
+        DATA.trailers = [
+          { title: DATA.title + " — Official Trailer", image: "https://img.youtube.com/vi/" + vid + "/hqdefault.jpg" }
+        ];
+        if (S.tab === "more") updateTabPanelOnly();
+      }
+    })
+    .catch(function() {});
+}
+
+/* ==========================================================
+   GRANULAR DOM RENDERING
+   ========================================================== */
+var $ = function(s){ return document.querySelector(s) };
+var GR = [["#5b8582","#1f3236"],["#d6453a","#3a1520"],["#e0903e","#4a2a12"],["#3c6ea8","#142640"],["#8a4fb0","#2a1540"],["#3da36b","#123020"],["#c94f7c","#40142a"]];
+function bg(i){
+  var p = GR[Math.abs(i||0) % GR.length];
+  return 'style="background:linear-gradient(160deg,'+p[0]+','+p[1]+')"';
+}
+function ic(d,w){ w = w||24; return '<svg width="'+w+'" height="'+w+'" viewBox="0 0 24 24" class="ln">'+d+'</svg>'; }
+var PLAY = '<svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 1.5v13L14 8z" fill="currentColor"/></svg>';
+var PL2 = '<svg width="10" height="10" viewBox="0 0 16 16"><path d="M4 2v12l10-6z" fill="#fff"/></svg>';
+var DLI = '<path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/>';
+var CHK = '<path d="m5 12.5 4.5 4.5L19 7.5"/>';
+function toast(m){ var e=$("#toast"); e.textContent=m; e.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(function(){ e.classList.remove("on") },1800); }
+function tabs(){ return DATA.type==="film" ? [["more","Trailers & More"],["like","More Like This"]] : [["eps","Episodes"],["more","Trailers & More"],["like","More Like This"]]; }
+
+function renderEpisodesSkeleton(count) {
+  var out = '';
+  for (var i = 0; i < (count || 4); i++) {
+    out += '<div class="ep">' +
+      '<div class="skel" style="width:100%;aspect-ratio:16/9;border-radius:5px"></div>' +
+      '<div>' +
+        '<div class="skel skel-line" style="width:74%;height:14px"></div>' +
+        '<div class="skel skel-line" style="width:46%;height:10px;margin-bottom:0"></div>' +
+      '</div>' +
+      '<div class="skel" style="width:24px;height:24px;border-radius:50%"></div>' +
+      '<div class="skel skel-line" style="grid-column:1/4;width:92%;height:10px;margin-top:6px;margin-bottom:0"></div>' +
+    '</div>';
+  }
+  return out;
+}
+
+function renderDetailsSkeleton() {
+  return '<div class="hero skel" style="border-radius:0">' +
+    '<div class="bar"><div class="brand"><svg width="12" height="20"><use href="#z"/></svg>ZORVÉN</div><div class="rt"><span class="cx" data-a="close">'+ic('<path d="M6 6l12 12M18 6 6 18"/>',18)+'</span></div></div>' +
+    '<div class="hero-overlay">' +
+      '<div class="skel skel-line" style="width:65%;height:26px"></div>' +
+      '<div class="skel skel-line" style="width:48%;height:13px;margin-bottom:0"></div>' +
+    '</div>' +
+  '</div>' +
+  '<div class="body">' +
+    '<div style="display:flex;gap:6px;margin:8px 0 12px">' +
+      '<div class="skel" style="width:64px;height:22px;border-radius:12px"></div>' +
+      '<div class="skel" style="width:72px;height:22px;border-radius:12px"></div>' +
+      '<div class="skel" style="width:58px;height:22px;border-radius:12px"></div>' +
+    '</div>' +
+    '<div class="skel" style="width:100%;height:44px;border-radius:6px;margin-bottom:8px"></div>' +
+    '<div class="skel" style="width:100%;height:44px;border-radius:6px;margin-bottom:14px"></div>' +
+    '<div class="skel skel-line" style="width:96%"></div>' +
+    '<div class="skel skel-line" style="width:88%"></div>' +
+    '<div class="skel skel-line" style="width:64%;margin-bottom:16px"></div>' +
+    '<div style="display:flex;gap:12px;margin-bottom:16px">' +
+      '<div class="skel" style="width:54px;height:54px;border-radius:50%"></div>' +
+      '<div class="skel" style="width:54px;height:54px;border-radius:50%"></div>' +
+      '<div class="skel" style="width:54px;height:54px;border-radius:50%"></div>' +
+    '</div>' +
+    renderEpisodesSkeleton(3) +
+  '</div>';
+}
+
+function buildTabPanelHtml() {
+  var d = DATA, h = '';
+  if (S.tab === "eps") {
+    var sn = getSelectedSeasonObj();
+    var currentSeasonNum = sn.seasonNumber != null ? Number(sn.seasonNumber) : (S.season + 1);
+    h += '<div class="sel" data-a="seasons">'+esc(sn.name)+' <svg width="9" height="5" viewBox="0 0 9 5"><path d="M0 0h9L4.5 5z" fill="#fff"/></svg></div>';
+    if (PAGE_STATE.loadingEpisodes) {
+      h += renderEpisodesSkeleton(4);
+    } else if (!sn.episodes || !sn.episodes.length) {
+      h += '<p class="credits" style="padding:12px 0">No episodes listed for this season.</p>';
+    } else {
+      sn.episodes.forEach(function(e, k) {
+        var epNum = e.episodeNumber != null ? Number(e.episodeNumber) : (k + 1);
+        var isSelected = (currentSeasonNum === Number(S.selectedSeasonNumber)) && (epNum === Number(S.selectedEpisodeNumber));
+        var epImg = e.image || d.hero || d.poster || '';
+        var epFb = d.hero || d.poster || '';
+        h += '<div class="ep'+(isSelected ? ' active-ep' : '')+'" data-a="play" data-ep="'+k+'">'+
+          '<div class="th" '+bg(k)+'>'+
+            (epImg ? '<img class="timg" src="'+esc(epImg)+'" data-fb="'+esc(epFb)+'" alt="'+esc(e.title)+'" decoding="async" onerror="window.onDetailImgError(this)">' : '')+
+            '<div class="pl">'+PL2+'</div>'+
+          '</div>'+
+          '<div>'+
+            '<b>'+epNum+'. '+esc(e.title)+(isSelected ? '<span class="ep-now">SELECTED</span>' : '')+'</b>'+
+            '<small>'+esc(e.duration)+'</small>'+
+          '</div>'+
+          '<span class="d" data-a="dl" data-ep="'+k+'">'+ic(DLI,22)+'</span>'+
+          (e.desc ? '<p>'+esc(e.desc)+'</p>' : '')+
+        '</div>';
+      });
+    }
+  } else if (S.tab === "more") {
+    var trList = (d.trailers && d.trailers.length) ? d.trailers : [{ title: "Official Stream — " + d.title, image: d.hero || d.poster }];
+    trList.forEach(function(x, k) {
+      var trFb = d.hero || d.poster || '';
+      h += '<div class="tr" data-a="play" data-kind="trailer"><div class="th" '+bg(k+1)+'>'+
+        (x.image ? '<img class="timg" src="'+esc(x.image)+'" data-fb="'+esc(trFb)+'" alt="'+esc(x.title)+'" decoding="async" onerror="window.onDetailImgError(this)">' : '')+
+        '<div class="big" style="pointer-events:none;top:50%"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M7 4l13 8-13 8z"/></svg></div></div><b>'+esc(x.title)+'</b></div>';
+    });
+  } else {
+    if (!d.similar || !d.similar.length) {
+      h += '<p class="credits" style="padding:12px 0">No related titles available.</p>';
+    } else {
+      h += '<div class="grid">'+d.similar.map(function(x, k) {
+        return '<div class="th" '+bg(k+2)+' data-a="open" data-id="'+esc(x.id)+'">'+
+          (x.image ? '<img class="timg" src="'+esc(x.image)+'" data-fb="'+esc(x.fallbackImage || '')+'" alt="'+esc(x.title)+'" decoding="async" onerror="window.onDetailImgError(this)">' : '')+
+          '<div class="tgrad"></div>'+
+          '<div class="tlbl">'+esc(x.title)+'</div></div>';
+      }).join("")+'</div>';
+    }
+  }
+  return h;
+}
+
+function updatePrimaryPlayButtonOnly() {
+  var playBtn = document.getElementById('zd-main-play-btn');
+  if (playBtn) {
+    playBtn.innerHTML = PLAY + esc(getPrimaryPlayButtonLabel());
+  }
+}
+
+function updateTabPanelOnly() {
+  var tabsEl = document.getElementById('zd-tabs');
+  if (tabsEl) {
+    var T = tabs();
+    tabsEl.innerHTML = T.map(function(t){
+      return '<div class="'+(t[0]===S.tab?"on":"")+'" data-a="tab" data-p="'+t[0]+'">'+t[1]+'</div>';
+    }).join("");
+  }
+  var panelEl = document.getElementById('zd-tab-panel');
+  if (panelEl) {
+    panelEl.innerHTML = buildTabPanelHtml();
+  }
+}
+
+function updateUserActionsOnly() {
+  var d = DATA;
+  var dlBtn = document.getElementById('zd-dl-btn');
+  if (dlBtn) {
+    dlBtn.innerHTML = ic(d.downloaded ? CHK : DLI, 20) + (d.downloaded ? "Downloaded" : "Download");
+  }
+  var listBtn = document.getElementById('zd-act-list');
+  if (listBtn) {
+    listBtn.innerHTML = ic(d.inList ? CHK : '<path d="M12 5v14M5 12h14"/>', 26) + 'My List';
+  }
+  var rateBtn = document.getElementById('zd-act-rate');
+  if (rateBtn) {
+    rateBtn.className = d.liked ? "on" : "";
+  }
+}
+
+function renderFullPage(){
+  if (PAGE_STATE.loading) {
+    $("#zd").innerHTML = renderDetailsSkeleton();
+    return;
+  }
+
+  if (PAGE_STATE.error) {
+    $("#zd").innerHTML = '<div class="hero" '+bg(1)+'><div class="hero-grad"></div><div class="bar"><div class="brand"><svg width="12" height="20"><use href="#z"/></svg>ZORVÉN</div><div class="rt"><span class="cx" data-a="close">'+ic('<path d="M6 6l12 12M18 6 6 18"/>',18)+'</span></div></div></div>' +
+      '<div class="api-state"><h3>Unable to Load Title</h3><p>' + esc(PAGE_STATE.error) + '</p><button class="btn play" data-a="retry" style="max-width:180px;margin:0 auto">Retry</button></div>';
+    return;
+  }
+
+  var d = DATA, T = tabs();
+  if (!S.tab) S.tab = T[0][0];
+  var brandLabel = d.isAnime ? (d.type === "film" ? "ANIME FILM" : "ANIME SERIES") : (d.type === "film" ? "FILM" : "SERIES");
+  var heroArtwork = d.hero || d.poster;
+  var heroFallback = (heroArtwork === d.hero) ? (d.poster || '') : (d.hero || '');
+
+  var h = '<div class="hero" id="zd-hero" '+bg(0)+'>'+
+    (heroArtwork ? '<img class="himg" src="'+esc(heroArtwork)+'" data-fb="'+esc(heroFallback)+'" alt="'+esc(d.title)+'" onerror="window.onDetailImgError(this)">' : '')+
+    '<div class="hero-grad"></div>'+
+    '<div class="bar"><div class="brand"><svg width="12" height="20"><use href="#z"/></svg>'+brandLabel+'</div><div class="rt"><span data-a="cast">'+ic('<path d="M3 8V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"/><path d="M3 12a9 9 0 0 1 9 9"/><path d="M3 16a5 5 0 0 1 5 5"/>')+'</span><span class="cx" data-a="close">'+ic('<path d="M6 6l12 12M18 6 6 18"/>',18)+'</span></div></div>'+
+    '<div class="big" data-a="play"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M7 4l13 8-13 8z"/></svg></div>'+
+    '<div class="hero-overlay">'+
+      '<h1>'+esc(d.title)+'</h1>'+
+      (d.originalTitle ? '<div class="orig-title">'+esc(d.originalTitle)+'</div>' : '')+
+      '<div class="meta">'+
+        (d.year ? '<span>'+esc(d.year)+'</span>' : '')+
+        (d.rating ? '<span class="box">'+esc(d.rating)+'</span>' : '')+
+        '<span>'+esc(d.type==="film" ? (d.duration || (d.runtime ? d.runtime+' min' : 'Movie')) : (d.seasons.length+(d.seasons.length>1?" Seasons":" Season")))+'</span>'+
+        (d.platform ? '<span class="box">'+esc(d.platform)+'</span>' : '')+
+        (d.language ? '<span class="box">'+esc(d.language)+'</span>' : '')+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
+  h += '<div class="body" id="zd-body">';
+  if (d.genres && d.genres.length) {
+    h += '<div class="gchips">' + d.genres.map(function(gName){
+      return '<span class="gchip">' + esc(gName) + '</span>';
+    }).join('') + (d.category ? '<span class="gchip">' + esc(d.category) + '</span>' : '') + '</div>';
+  }
+
+  h += '<button class="btn play" id="zd-main-play-btn" data-a="play">'+PLAY+esc(getPrimaryPlayButtonLabel())+'</button>' +
+       '<button class="btn dl" id="zd-dl-btn" data-a="dl">'+ic(d.downloaded?CHK:DLI,20)+(d.downloaded?"Downloaded":"Download")+'</button>';
+  if (d.description) {
+    h += '<p class="desc">'+esc(d.description)+'</p>';
+  }
+
+  var creditLines = [];
+  if (d.releaseDate) creditLines.push('Release Date: ' + esc(d.releaseDate));
+  if (d.director) creditLines.push('Director / Creator: ' + esc(d.director));
+  if (d.cast && d.cast.length) {
+    creditLines.push('Cast: ' + d.cast.map(function(c){ return esc(c.name + (c.character ? ' ('+c.character+')' : '')); }).join(', '));
+  }
+  if (creditLines.length) {
+    h += '<div class="credits">' + creditLines.join('<br>') + '</div>';
+  }
+
+  if (d.cast && d.cast.length) {
+    h += '<div class="cast-rail">' + d.cast.map(function(c) {
+      var initials = (c.name || '?').split(' ').map(function(w){ return w[0]; }).join('').slice(0, 2);
+      return '<div class="cast-card"><div class="cav">' +
+        (c.profileImage ? '<img src="'+esc(c.profileImage)+'" alt="'+esc(c.name)+'" onerror="this.style.display=\'none\'">' : esc(initials)) +
+        '</div><span>'+esc(c.name)+'</span>'+(c.character ? '<small>'+esc(c.character)+'</small>' : '')+'</div>';
+    }).join('') + '</div>';
+  }
+
+  h += '<div class="acts">' +
+    '<div id="zd-act-list" data-a="list">'+ic(d.inList?CHK:'<path d="M12 5v14M5 12h14"/>',26)+'My List</div>' +
+    '<div id="zd-act-rate" data-a="rate" class="'+(d.liked?"on":"")+'">'+ic('<path d="M7 11v9H4v-9zM7 11l4-8c2 0 3 1.5 2.5 3.5L13 9h6a2 2 0 0 1 2 2.3l-1.2 6.5A2 2 0 0 1 17.8 20H7"/>',26)+'Rate</div>' +
+    '<div data-a="share">'+ic('<path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',26)+'Share</div>' +
+  '</div>';
+
+  h += '<div class="tabs" id="zd-tabs">'+T.map(function(t){ return '<div class="'+(t[0]===S.tab?"on":"")+'" data-a="tab" data-p="'+t[0]+'">'+t[1]+'</div>' }).join("")+'</div>';
+  h += '<div id="zd-tab-panel">' + buildTabPanelHtml() + '</div>';
+  h += '</div>';
+
+  $("#zd").innerHTML = h;
+  PAGE_STATE.mountedId = d.id;
+}
+
+function sheet(html){ $("#sbg").style.display="block"; $("#sheet").style.display="block"; $("#sheet").innerHTML=html; }
+function closeSheet(){ $("#sbg").style.display="none"; $("#sheet").style.display="none"; }
+
+document.addEventListener("click", function(e){
+  if(e.target.id==="sbg"){ closeSheet(); return; }
+  var o = e.target.closest("[data-season]");
+  if(o && !o.dataset.a){
+    var nextSeasonIdx = +o.dataset.season;
+    closeSheet();
+    selectSeasonByIndex(nextSeasonIdx, false);
+    return;
+  }
+  var el = e.target.closest("[data-a]"); if(!el) return;
+  var a = el.dataset.a, d = DATA;
+
+  // Handle download icon inside episode card without triggering episode playback
+  if(a==="dl"){
+    e.stopPropagation();
+    if(el.dataset.ep!=null){
+      HOOKS.onDownload({ on:true, episode:+el.dataset.ep+1 });
+      toast("Downloading episode");
+    } else {
+      d.downloaded=!d.downloaded;
+      HOOKS.onDownload({ on:d.downloaded });
+      updateUserActionsOnly();
+    }
+    return;
+  }
+
+  if(a==="close") HOOKS.onClose();
+  else if(a==="retry") initFromUrl(true);
+  else if(a==="cast") HOOKS.onCast();
+  else if(a==="pclose") pclose();
+  else if(a==="pretry"){
+    openZxcPlayer({
+      isSeries: PLAYER_STATE.isSeries,
+      tmdbId: PLAYER_STATE.tmdbId || DATA.tmdbId,
+      title: PLAYER_STATE.title || DATA.title,
+      episodeTitle: PLAYER_STATE.episodeTitle,
+      seasonNumber: PLAYER_STATE.seasonNumber,
+      episodeNumber: PLAYER_STATE.episodeNumber
+    });
+  }
+  else if(a==="plandscape"){
+    PLAYER_STATE.landscape = !PLAYER_STATE.landscape;
+    var plEl = document.getElementById('pl');
+    if (plEl) plEl.classList.toggle('is-landscape', PLAYER_STATE.landscape);
+    setNativePlayerMode(true, PLAYER_STATE.landscape);
+  }
+  else if(a==="pl-season"){
+    var sIdx = +el.dataset.season;
+    selectSeasonByIndex(sIdx, true);
+  }
+  else if(a==="pl-ep"){
+    var epIdx = +el.dataset.ep;
+    var snObj = getSelectedSeasonObj();
+    var epObj = (snObj.episodes && snObj.episodes[epIdx]) || null;
+    var sNumber = snObj.seasonNumber != null ? Number(snObj.seasonNumber) : (S.season + 1);
+    var eNumber = (epObj && epObj.episodeNumber != null) ? Number(epObj.episodeNumber) : (epIdx + 1);
+    HOOKS.onPlay({
+      seasonNumber: sNumber,
+      episodeNumber: eNumber,
+      episodeTitle: epObj ? epObj.title : ('Episode ' + eNumber)
+    });
+  }
+  else if(a==="pl-next-ep"){
+    var curSn = getSelectedSeasonObj();
+    var eps = (curSn && Array.isArray(curSn.episodes)) ? curSn.episodes : [];
+    var nextEpNumber = Number(PLAYER_STATE.episodeNumber) + 1;
+    var foundNext = null;
+    for (var i = 0; i < eps.length; i++) {
+      var n = eps[i].episodeNumber != null ? Number(eps[i].episodeNumber) : (i + 1);
+      if (n === nextEpNumber) { foundNext = eps[i]; break; }
+    }
+    if (foundNext) {
+      HOOKS.onPlay({
+        seasonNumber: PLAYER_STATE.seasonNumber,
+        episodeNumber: nextEpNumber,
+        episodeTitle: foundNext.title
+      });
+    } else if (S.season + 1 < DATA.seasons.length) {
+      selectSeasonByIndex(S.season + 1, true);
+    } else {
+      toast("You have reached the final episode");
+    }
+  }
+  else if(a==="play"){
+    if (d.type === "series") {
+      var sn = getSelectedSeasonObj();
+      var sNum = sn.seasonNumber != null ? Number(sn.seasonNumber) : (S.season + 1);
+      if (el.dataset.ep != null) {
+        var clickedIdx = +el.dataset.ep;
+        var clickedEp = (sn.episodes && sn.episodes[clickedIdx]) || null;
+        var epNum = (clickedEp && clickedEp.episodeNumber != null) ? Number(clickedEp.episodeNumber) : (clickedIdx + 1);
+        HOOKS.onPlay({
+          seasonNumber: sNum,
+          episodeNumber: epNum,
+          episodeTitle: clickedEp ? clickedEp.title : ('Episode ' + epNum)
+        });
+      } else {
+        var defaultEp = getSelectedEpisodeObj();
+        var defEpNum = (defaultEp && defaultEp.episodeNumber != null) ? Number(defaultEp.episodeNumber) : (S.selectedEpisodeNumber || 1);
+        HOOKS.onPlay({
+          seasonNumber: sNum,
+          episodeNumber: defEpNum,
+          episodeTitle: defaultEp ? defaultEp.title : ('Episode ' + defEpNum)
+        });
+      }
+    } else {
+      HOOKS.onPlay({});
+    }
+  }
+  else if(a==="list"){
+    d.inList=!d.inList;
+    HOOKS.onList(d.inList);
+    updateUserActionsOnly();
+  }
+  else if(a==="rate"){
+    d.liked=!d.liked;
+    HOOKS.onRate(d.liked);
+    updateUserActionsOnly();
+  }
+  else if(a==="share") HOOKS.onShare();
+  else if(a==="tab"){
+    if (S.tab !== el.dataset.p) {
+      S.tab = el.dataset.p;
+      updateTabPanelOnly();
+    }
+  }
+  else if(a==="seasons"){
+    sheet(d.seasons.map(function(s,i){
+      return '<div class="o'+(i===S.season?' active-s':'')+'" data-season="'+i+'"><span>'+esc(s.name)+'</span>'+(s.episodeCount ? '<small>'+s.episodeCount+' episodes</small>' : '')+'</div>';
+    }).join(""));
+  }
+  else if(a==="open"){
+    var it=d.similar.filter(function(x){ return String(x.id)===String(el.dataset.id) })[0];
+    if(it) HOOKS.onOpenTitle(it);
+  }
+});
+
+function initFromUrl(force) {
+  var params = new URLSearchParams(location.search);
+  var st = loadAppState();
+  var qId = params.get('id') || st.lastOpenedId || '';
+  var qRawId = params.get('rawId') || '';
+  var qTmdbId = params.get('tmdbId') || '';
+  var qType = params.get('type') || 'movie';
+  var qIsSeries = params.get('isSeries') === 'true' || qType === 'tv';
+  var qCat = params.get('category') || '';
+  var qTitle = params.get('title') || '';
+  fetchFullContentDetails(qId, qType, qIsSeries, qCat, qTitle, !!force, qTmdbId, qRawId);
+}
+
+window.addEventListener('popstate', function() {
+  initFromUrl(false);
+});
+
+window.addEventListener('pagehide', function() {
+  pclose();
+});
+
+initFromUrl(false);
+</script>
+</body>
+</html>

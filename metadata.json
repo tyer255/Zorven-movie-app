@@ -1,0 +1,6 @@
+{
+  "name": "Zorven",
+  "description": "Premium Android cinema and series streaming experience with custom streaming server API integration, ambient dark UI, and offline library management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
