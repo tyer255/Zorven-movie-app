@@ -1568,8 +1568,8 @@ function openDetailFromElement(el) {
 
 function opts(l,a){return l.map(function(x){return '<div class="opt" data-a="'+a+'" data-p="'+esc(x[0])+'" data-label="'+esc(x[2]||x[0])+'">'+(x[1]||'')+'<span>'+esc(x[2]||x[0])+'</span></div>'}).join('')}
 
-/* ZXCSTREAM Mirror Player Controller (#pl) for Home / Search / Continue Watching / Clips */
-var ZXC_PLAYER_BASE = 'https://zxcstream-mirror.vercel.app/player';
+/* TheOGPirateBot Embed Player Controller (#pl) for Home / Search / Continue Watching / Clips */
+var EMBED_PLAYER_BASE = 'https://embed.theogpiratebot.online/embed';
 var PL = {
   open: false,
   loading: false,
@@ -1596,7 +1596,7 @@ function setNativePlayerMode(active, landscape) {
 function destroyHomePlayerIframe() {
   clearTimeout(PL.loadTimer);
   PL.loadTimer = null;
-  var existing = document.getElementById('zxc-player-iframe');
+  var existing = document.getElementById('og-player-iframe') || document.getElementById('zxc-player-iframe');
   if (existing) {
     try {
       existing.onload = null;
@@ -1662,13 +1662,13 @@ function pclose() {
 }
 window.pclose = pclose;
 
-function buildHomeZxcUrl(tmdbId, isSeries) {
+function buildHomeEmbedUrl(tmdbId, isSeries) {
   var cleanId = String(tmdbId || '').trim();
   if (!/^[1-9]\d*$/.test(cleanId)) return '';
   if (isSeries) {
-    return ZXC_PLAYER_BASE + '/tv/' + encodeURIComponent(cleanId) + '/1/1';
+    return EMBED_PLAYER_BASE + '/tv/' + encodeURIComponent(cleanId) + '/1/1?color=f4f4f4&episodeSelector=1';
   }
-  return ZXC_PLAYER_BASE + '/movie/' + encodeURIComponent(cleanId);
+  return EMBED_PLAYER_BASE + '/movie/' + encodeURIComponent(cleanId) + '?color=f4f4f4';
 }
 
 function mountHomePlayerIframe(url, seq) {
@@ -1691,11 +1691,13 @@ function mountHomePlayerIframe(url, seq) {
   if (loadEl) loadEl.classList.remove('hidden');
 
   var iframe = document.createElement('iframe');
-  iframe.id = 'zxc-player-iframe';
+  iframe.id = 'og-player-iframe';
+  iframe.setAttribute('title', 'TheOGPirateBot player');
   iframe.setAttribute('width', '100%');
   iframe.setAttribute('height', '100%');
   iframe.setAttribute('frameborder', '0');
   iframe.setAttribute('scrolling', 'no');
+  iframe.style.cssText = 'aspect-ratio:16/9;border:0;border-radius:12px;width:100%;height:100%;display:block;background:#000;';
   iframe.setAttribute('allowfullscreen', 'true');
   iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
   iframe.setAttribute('referrerpolicy', 'origin');
@@ -1712,7 +1714,7 @@ function mountHomePlayerIframe(url, seq) {
     if (seq !== PL.seq || done) return;
     done = true;
     clearTimeout(PL.loadTimer);
-    PL.error = 'The embedded ZXCSTREAM player could not load this stream right now.';
+    PL.error = 'The embedded player could not load this stream right now.';
     var l = document.getElementById('pl-loading');
     if (l) l.classList.add('hidden');
     var er = document.getElementById('pl-error');
@@ -1773,7 +1775,7 @@ function popen(el, fallbackTitle) {
   $('#pl').style.display = 'block';
   showHomeOverlayBack();
 
-  var directUrl = buildHomeZxcUrl(tmdbId, isSeries);
+  var directUrl = buildHomeEmbedUrl(tmdbId, isSeries);
   if (directUrl) {
     PL.url = directUrl;
     mountHomePlayerIframe(directUrl, seq);
@@ -1802,7 +1804,7 @@ function popen(el, fallbackTitle) {
       if (seq !== PL.seq || !PL.open) return;
       if (resolvedTmdb) {
         PL.tmdbId = resolvedTmdb;
-        PL.url = buildHomeZxcUrl(resolvedTmdb, isSeries);
+        PL.url = buildHomeEmbedUrl(resolvedTmdb, isSeries);
         mountHomePlayerIframe(PL.url, seq);
       } else {
         PL.error = 'No canonical TMDB ID was found for "' + title + '".';

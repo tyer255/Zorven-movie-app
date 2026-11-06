@@ -120,11 +120,11 @@ svg{display:block}
 <script>
 /* =========================================================================
    PRODUCTION UNIFIED V1 API CLIENT (https://anymovie.ai.studio/api/v1)
-   & ZXCSTREAM MIRROR PLAYER INTEGRATION (https://zxcstream-mirror.vercel.app/player/)
+   & THEOGPIRATEBOT EMBED PLAYER INTEGRATION (https://embed.theogpiratebot.online/embed/)
    ========================================================================= */
 var PROD_DOMAIN = 'https://anymovie.ai.studio';
 var PROD_API_BASE = 'https://anymovie.ai.studio/api/v1';
-var ZXC_PLAYER_BASE = 'https://zxcstream-mirror.vercel.app/player';
+var EMBED_PLAYER_BASE = 'https://embed.theogpiratebot.online/embed';
 var apiCallbacks = {};
 var apiCallSeq = 0;
 var memCache = {};
@@ -215,10 +215,10 @@ function extractValidTmdbId(input) {
   return '';
 }
 
-/* Builds and validates a trusted ZXCSTREAM Mirror Player URL.
-   Movies: https://zxcstream-mirror.vercel.app/player/movie/{TMDB_ID}
-   Series: https://zxcstream-mirror.vercel.app/player/tv/{TMDB_ID}/{SEASON_NUMBER}/{EPISODE_NUMBER} */
-function buildZxcPlayerUrl(opts) {
+/* Builds and validates TheOGPirateBot Embed Player URL.
+   Movies: https://embed.theogpiratebot.online/embed/movie/{TMDB_ID}?color=f4f4f4
+   Series: https://embed.theogpiratebot.online/embed/tv/{TMDB_ID}/{SEASON_NUMBER}/{EPISODE_NUMBER}?color=f4f4f4&episodeSelector=1 */
+function buildEmbedPlayerUrl(opts) {
   opts = opts || {};
   var cleanTmdbId = extractValidTmdbId(opts.tmdbId);
   if (!cleanTmdbId) {
@@ -240,7 +240,7 @@ function buildZxcPlayerUrl(opts) {
       tmdbId: cleanTmdbId,
       seasonNumber: sNum,
       episodeNumber: eNum,
-      url: ZXC_PLAYER_BASE + '/tv/' + encodeURIComponent(cleanTmdbId) + '/' + encodeURIComponent(String(sNum)) + '/' + encodeURIComponent(String(eNum)),
+      url: EMBED_PLAYER_BASE + '/tv/' + encodeURIComponent(cleanTmdbId) + '/' + encodeURIComponent(String(sNum)) + '/' + encodeURIComponent(String(eNum)) + '?color=f4f4f4&episodeSelector=1',
       error: null
     };
   }
@@ -250,7 +250,7 @@ function buildZxcPlayerUrl(opts) {
     tmdbId: cleanTmdbId,
     seasonNumber: null,
     episodeNumber: null,
-    url: ZXC_PLAYER_BASE + '/movie/' + encodeURIComponent(cleanTmdbId),
+    url: EMBED_PLAYER_BASE + '/movie/' + encodeURIComponent(cleanTmdbId) + '?color=f4f4f4',
     error: null
   };
 }
@@ -427,7 +427,7 @@ function syncUserFlags() {
 }
 
 /* =========================================================================
-   SINGLE-INSTANCE ZXCSTREAM MIRROR PLAYER CONTROLLER (#pl)
+   SINGLE-INSTANCE THEOGPIRATEBOT EMBED PLAYER CONTROLLER (#pl)
    ========================================================================= */
 var PLAYER_STATE = {
   open: false,
@@ -448,7 +448,7 @@ var PLAYER_STATE = {
 function destroyActivePlayerIframe() {
   clearTimeout(PLAYER_STATE.loadTimer);
   PLAYER_STATE.loadTimer = null;
-  var existingIframe = document.getElementById('zxc-player-iframe');
+  var existingIframe = document.getElementById('og-player-iframe') || document.getElementById('zxc-player-iframe');
   if (existingIframe) {
     try {
       existingIframe.onload = null;
@@ -598,11 +598,13 @@ function mountOrUpdatePlayerIframe(targetUrl, seq) {
   if (loadingEl) loadingEl.classList.remove('hidden');
 
   var iframe = document.createElement('iframe');
-  iframe.id = 'zxc-player-iframe';
+  iframe.id = 'og-player-iframe';
+  iframe.setAttribute('title', 'TheOGPirateBot player');
   iframe.setAttribute('width', '100%');
   iframe.setAttribute('height', '100%');
   iframe.setAttribute('frameborder', '0');
   iframe.setAttribute('scrolling', 'no');
+  iframe.style.cssText = 'aspect-ratio:16/9;border:0;border-radius:12px;width:100%;height:100%;display:block;background:#000;';
   iframe.setAttribute('allowfullscreen', 'true');
   iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
   iframe.setAttribute('referrerpolicy', 'origin');
@@ -622,7 +624,7 @@ function mountOrUpdatePlayerIframe(targetUrl, seq) {
     settled = true;
     clearTimeout(PLAYER_STATE.loadTimer);
     PLAYER_STATE.loading = false;
-    PLAYER_STATE.error = 'The embedded ZXCSTREAM player could not load this stream right now.';
+    PLAYER_STATE.error = 'The embedded player could not load this stream right now.';
     var lEl = document.getElementById('pl-loading');
     if (lEl) lEl.classList.add('hidden');
     var eEl = document.getElementById('pl-error');
@@ -643,7 +645,7 @@ function mountOrUpdatePlayerIframe(targetUrl, seq) {
   iframe.src = targetUrl;
 }
 
-function openZxcPlayer(playRequest) {
+function openEmbedPlayer(playRequest) {
   playRequest = playRequest || {};
   var seq = ++PLAYER_STATE.activeSeq;
   var isSeries = playRequest.isSeries != null ? !!playRequest.isSeries : (DATA.type === 'series');
@@ -670,7 +672,7 @@ function openZxcPlayer(playRequest) {
   var plEl = document.getElementById('pl');
   var alreadyMounted = plEl.style.display === 'block' && document.getElementById('pl-stage');
 
-  var built = buildZxcPlayerUrl({
+  var built = buildEmbedPlayerUrl({
     isSeries: isSeries,
     tmdbId: tmdbId,
     seasonNumber: seasonNum,
@@ -741,7 +743,7 @@ function openZxcPlayer(playRequest) {
       if (resolvedTmdb) {
         DATA.tmdbId = resolvedTmdb;
         PLAYER_STATE.tmdbId = resolvedTmdb;
-        var rebuilt = buildZxcPlayerUrl({
+        var rebuilt = buildEmbedPlayerUrl({
           isSeries: isSeries,
           tmdbId: resolvedTmdb,
           seasonNumber: PLAYER_STATE.seasonNumber,
@@ -807,7 +809,7 @@ var HOOKS = {
       S.selectedEpisodeNumber = eNum;
       updatePrimaryPlayButtonOnly();
       updateTabPanelOnly();
-      openZxcPlayer({
+      openEmbedPlayer({
         isSeries: true,
         tmdbId: DATA.tmdbId,
         title: DATA.title,
@@ -816,7 +818,7 @@ var HOOKS = {
         episodeNumber: eNum
       });
     } else {
-      openZxcPlayer({
+      openEmbedPlayer({
         isSeries: false,
         tmdbId: DATA.tmdbId,
         title: DATA.title
@@ -1491,7 +1493,7 @@ document.addEventListener("click", function(e){
   else if(a==="cast") HOOKS.onCast();
   else if(a==="pclose") pclose();
   else if(a==="pretry"){
-    openZxcPlayer({
+    openEmbedPlayer({
       isSeries: PLAYER_STATE.isSeries,
       tmdbId: PLAYER_STATE.tmdbId || DATA.tmdbId,
       title: PLAYER_STATE.title || DATA.title,

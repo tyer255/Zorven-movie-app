@@ -224,7 +224,8 @@ fun ZorvenExactHtmlApp() {
                             val reqUrl = request?.url?.toString() ?: return false
                             // Allow player iframe video/source embeds, but block navigating to the player's external root home page
                             if (request.isForMainFrame == false) {
-                                if (reqUrl == "https://zxcstream-mirror.vercel.app/" || reqUrl == "https://zxcstream-mirror.vercel.app") {
+                                if (reqUrl == "https://embed.theogpiratebot.online/" || reqUrl == "https://embed.theogpiratebot.online" ||
+                                    reqUrl == "https://zxcstream-mirror.vercel.app/" || reqUrl == "https://zxcstream-mirror.vercel.app") {
                                     return true // Block navigating away to player home page
                                 }
                                 return false
